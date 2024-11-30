@@ -10,7 +10,7 @@ class AnimalBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_id(self, emaidil: str) -> Animal | None:
+    async def get_by_id(self, id: str) -> Animal | None:
         """Gets animal by id or None"""
         pass
 
