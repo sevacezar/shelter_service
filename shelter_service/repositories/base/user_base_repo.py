@@ -15,8 +15,13 @@ class UserBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def update_by_email(self, email: str, updated_params: dict[str, Any]) -> User | None:
-        """Updates user by email using passed params for update"""
+    async def get_by_id(self, id: str) -> User | None:
+        """Gets user by id or None"""
+        pass
+
+    @abstractmethod
+    async def update_by_id(self, id: str, updated_params: dict[str, Any]) -> User | None:
+        """Updates user by id using passed params for update"""
         pass
 
     @abstractmethod
