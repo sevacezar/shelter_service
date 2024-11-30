@@ -38,8 +38,8 @@ def animal(animal_dict: dict) -> Animal:
 @pytest.fixture(scope='function')
 def images() -> list[Image]:
     images_list: list[dict] = [
-        {'id': 1, 'filename': 'some_image1.png', 'relative_path': 'imgs/1.png', 'description': 'some description 1'},
-        {'id': 2, 'filename': 'some_image2.png', 'relative_path': 'imgs/2.png', 'description': 'some description 2'},
+        {'id': 1, 'filename': 'some_image1.png', 'relative_path': 'imgs/1.png', 'description': 'some description 1', 'is_avatar': False},
+        {'id': 2, 'filename': 'some_image2.png', 'relative_path': 'imgs/2.png', 'description': 'some description 2', 'is_avatar': True},
     ]
     images: list[Image] = [
         Image(**i_img_dict) for i_img_dict in images_list
@@ -160,17 +160,20 @@ def test_image_init():
     filename: str = 'some_image.png'
     ralative_path: str = 'imgs/1.png'
     descripton: str = 'Funny'
+    is_avatar: bool = True
     image: Image = Image(
         filename=filename,
         id=id,
         relative_path=ralative_path,
         description=descripton,
+        is_avatar=is_avatar,
     )
     assert image
     assert image.filename == filename
     assert image.id == id
     assert image.relative_path == ralative_path
     assert image.description == descripton
+    assert image.is_avatar == is_avatar
 
 def test_image_generate_path():
     id: int = 1
@@ -212,6 +215,7 @@ def test_image_from_dict():
         'filename': 'some_image.png',
         'relative_path': 'imgs/1.png',
         'description': 'Funny',
+        'is_avatar': True,
     }
     image: Image = Image.from_dict(image_dict)
     assert image
@@ -219,6 +223,8 @@ def test_image_from_dict():
     assert image.id == image_dict.get('id')
     assert image.relative_path == image_dict.get('relative_path')
     assert image.description == image_dict.get('description')
+    assert image.is_avatar == image_dict.get('is_avatar')
+
 
 def test_image_to_dict():
     filename: str = 'some_image.png'
@@ -230,6 +236,7 @@ def test_image_to_dict():
         id=id,
         relative_path=relative_path,
         description=description,
+        is_avatar=False,
     )
     image_dict: dict = image.to_dict()
     assert image_dict
@@ -237,6 +244,7 @@ def test_image_to_dict():
     assert image.id == image_dict.get('id')
     assert image.relative_path == image_dict.get('relative_path')
     assert image.description == image_dict.get('description')
+    assert image.is_avatar == image_dict.get('is_avatar')
 
 def test_animal_init_with_images(animal_dict: dict, images: list[Image]):
     animal: Animal = Animal(**animal_dict)
