@@ -15,8 +15,8 @@ class AnimalBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def update_by_id(self, id: str, updated_params: dict[str, Any]) -> Animal | None:
-        """Updates animal by id using passed params for update"""
+    async def update(self, animal: Animal, updated_params: dict[str, Any]) -> Animal | None:
+        """Updates animal using passed params for update"""
         pass
 
     @abstractmethod
@@ -25,12 +25,17 @@ class AnimalBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def delete_by_id(self, id: str) -> None:
-        """Deletes animal by id"""
+    async def delete(self, animal: Animal) -> None:
+        """Deletes animal"""
         pass
-    
+
     @abstractmethod
-    async def get_filtered(self, filters: dict[str, Any]) -> list[Any]:
+    async def get_filtered(
+        self,
+        filters: dict[str, Any],
+        offset: int = 0,
+        limit: int | None = None,
+    ) -> list[Any]:
         """Gets animals with passed filters"""
         pass
 
@@ -50,5 +55,3 @@ class ImageBaseRepository(ABC):
     async def delete_by_id(self, id: str) -> None:
         """Deletes animal image by id"""
         pass
-
-

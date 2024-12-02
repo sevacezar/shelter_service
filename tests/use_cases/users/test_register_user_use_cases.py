@@ -7,7 +7,7 @@ from repositories.base.user_base_repo import UserBaseRepository
 from use_cases.exceptions import UserAlreadyExists
 from use_cases.users.register_user import RegisterUserUseCase
 
-async def test_user_register_test_case_success():
+async def test_user_register_use_case_success():
     first_name: str = 'Jojn'
     second_name: str = 'Test'
     email: str = 'john@gmail.com'
@@ -33,7 +33,7 @@ async def test_user_register_test_case_success():
     mock_repo: MagicMock = MagicMock(spec=UserBaseRepository)
     mock_repo.get_by_email.return_value = None
     mock_repo.create.return_value = created_user_with_id
-    
+
     use_case: RegisterUserUseCase = RegisterUserUseCase(user_repo=mock_repo)
     res_user: User = await use_case.execute(
         first_name=first_name,
@@ -51,7 +51,7 @@ async def test_user_register_test_case_success():
     mock_repo.get_by_email.assert_called_once_with(email=email)
     mock_repo.create.assert_called_once_with(user=created_user_without_id)
 
-async def test_user_register_test_case_already_exists():
+async def test_user_register_use_case_already_exists():
     first_name: str = 'Jojn'
     second_name: str = 'Test'
     email: str = 'john@gmail.com'
@@ -69,7 +69,7 @@ async def test_user_register_test_case_already_exists():
 
     mock_repo: MagicMock = MagicMock(spec=UserBaseRepository)
     mock_repo.get_by_email.return_value = created_user_with_id
-    
+
     use_case: RegisterUserUseCase = RegisterUserUseCase(user_repo=mock_repo)
     with pytest.raises(UserAlreadyExists):
         res_user: User = await use_case.execute(
@@ -82,5 +82,3 @@ async def test_user_register_test_case_already_exists():
 
     mock_repo.get_by_email.assert_called_once_with(email=email)
     mock_repo.create.assert_not_called
-
-

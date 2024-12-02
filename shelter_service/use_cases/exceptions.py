@@ -5,3 +5,7 @@ class UserAlreadyExists(Exception):
 class UserNotFound(Exception):
     """Exception, when user can`t be found"""
     pass
+
+class AnimalNotFound(Exception):
+    """Exception, when animal can`t be found"""
+    pass

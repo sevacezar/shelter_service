@@ -20,8 +20,8 @@ class UserBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def update_by_id(self, id: str, updated_params: dict[str, Any]) -> User | None:
-        """Updates user by id using passed params for update"""
+    async def update(self, user: User, updated_params: dict[str, Any]) -> User:
+        """Updates user using passed params for update"""
         pass
 
     @abstractmethod
@@ -30,7 +30,6 @@ class UserBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def delete_by_email(self, email: str) -> None:
-        """Deletes user by email"""
+    async def delete(self, user: User) -> None:
+        """Deletes user"""
         pass
-    

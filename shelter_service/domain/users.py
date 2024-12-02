@@ -29,8 +29,13 @@ class User:
         field_names: set = {field.name for field in fields(self)}
         for attr, value in params.items():
             if attr in field_names:
+                if attr in self._get_forbidden_params() and self.role != UserRole.ADMIN.value:
+                    continue
                 self.__setattr__(attr, value)
         return self
+
+    def _get_forbidden_params(self):
+        return ('role', 'id', 'created_at',)
 
     def __bool__(self):
         return True

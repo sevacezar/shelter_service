@@ -7,7 +7,7 @@ from repositories.base.user_base_repo import UserBaseRepository
 from use_cases.exceptions import UserNotFound
 from use_cases.users.get_user import GetUserByIdUseCase
 
-async def test_get_user_test_case_success_admin():
+async def test_get_user_use_case_success_admin():
     cur_user_id = uuid4()
     searched_user_id = uuid4()
 
@@ -35,7 +35,7 @@ async def test_get_user_test_case_success_admin():
         cur_user_id: cur_user,
         searched_user_id: searched_user,
     }.get(id)
-    
+
     use_case: GetUserByIdUseCase = GetUserByIdUseCase(user_repo=mock_repo)
     res = await use_case.execute(
         cur_user_id=cur_user_id,
@@ -45,7 +45,7 @@ async def test_get_user_test_case_success_admin():
     mock_repo.get_by_id.assert_any_call(id=cur_user_id)
     mock_repo.get_by_id.assert_any_call(id=searched_user_id)
 
-async def test_get_user_test_case_success_user():
+async def test_get_user_use_case_success_user():
     cur_user_id = uuid4()
     searched_user_id = cur_user_id
 
@@ -63,7 +63,7 @@ async def test_get_user_test_case_success_user():
         cur_user_id: cur_user,
         searched_user_id: cur_user,
     }.get(id)
-    
+
     use_case: GetUserByIdUseCase = GetUserByIdUseCase(user_repo=mock_repo)
     res = await use_case.execute(
         cur_user_id=cur_user_id,
@@ -73,7 +73,7 @@ async def test_get_user_test_case_success_user():
     mock_repo.get_by_id.assert_any_call(id=cur_user_id)
     mock_repo.get_by_id.assert_any_call(id=searched_user_id)
 
-async def test_get_user_test_case_cur_user_not_found():
+async def test_get_user_use_case_cur_user_not_found():
     cur_user_id = uuid4()
     searched_user_id = cur_user_id
 
@@ -87,7 +87,7 @@ async def test_get_user_test_case_cur_user_not_found():
         )
     mock_repo.get_by_id.assert_called_once_with(id=cur_user_id)
 
-async def test_get_user_test_case_permission_error():
+async def test_get_user_use_case_permission_error():
     cur_user_id = uuid4()
     searched_user_id = uuid4()
 
