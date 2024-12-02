@@ -15,8 +15,8 @@ class GetUserByIdUseCase:
         if not cur_user:
             raise UserNotFound('User with passed id not found')
         
-        if cur_user.id != searched_user_id or cur_user.role != UserRole.ADMIN.value:
+        if not (cur_user.id == searched_user_id or cur_user.role == UserRole.ADMIN.value):
             raise PermissionError('User information can get only admin or same user.')
         
-        searched_user: User = await self.user_repo.get_by_id(id=searched_user)
+        searched_user: User = await self.user_repo.get_by_id(id=searched_user_id)
         return searched_user
