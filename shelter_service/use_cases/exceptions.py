@@ -9,3 +9,7 @@ class UserNotFound(Exception):
 class AnimalNotFound(Exception):
     """Exception, when animal can`t be found"""
     pass
+
+class ImageNotFound(Exception):
+    """Exception, when image can`t be found"""
+    pass
