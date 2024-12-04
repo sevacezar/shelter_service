@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from uuid import uuid4
 import pytest
 
-from domain.animals import Animal
+from domain.animals import Animal, Image
 from domain.users import User, UserRole
 
 @pytest.fixture(scope='function')
@@ -38,4 +38,17 @@ def animal() -> Animal:
             in_shelter_at=datetime(2021, 1, 1, tzinfo=timezone.utc),
             description='Fynny dog',
             id=uuid4(),
+        )
+
+@pytest.fixture(scope='function')
+def image() -> Image:
+    animal_id: str = str(uuid4())
+    filename: str = 'funny.png'
+    return Image(
+            animal_id=animal_id,
+            filename=filename,
+            relative_path=f'imgs/{animal_id}/{filename}',
+            description='Funny photo',
+            is_avatar=False,
+            id=str(uuid4()),
         )
