@@ -42,7 +42,7 @@ async def test_update_description_image_use_case_success(admin: User, image: Ima
     assert res == updated_image
     user_mock_repo.get_by_id.assert_called_once_with(id=user_id)
     image_mock_repo.get_by_id.assert_called_once_with(id=image_id)
-    image_mock_repo.update_description.assert_called_once_with(image=image, descripion=descripion)
+    image_mock_repo.update_description.assert_called_once_with(image=image, description=description)
 
 async def test_update_description_image_use_case_user_not_admin(not_admin_user: User, image: Image):
     user_id: str = not_admin_user.id

@@ -103,10 +103,10 @@ def test_user_update(user_domain: User):
         'some_field': 'some_value',
     }
     updated_user: User = user_domain.update(updated_params)
-    assert updated_user.id == updated_params.get('id')
+    assert updated_user.id != updated_params.get('id')
     assert updated_user.first_name == updated_params.get('first_name')
     assert updated_user.second_name == updated_params.get('second_name')
     assert updated_user.email == updated_params.get('email')
     assert updated_user.phone == updated_params.get('phone')
     assert updated_user.hashed_password == updated_params.get('hashed_password')
-    assert updated_user.role == updated_params.get('role')
+    assert updated_user.role != updated_params.get('role')

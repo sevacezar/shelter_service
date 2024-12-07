@@ -14,7 +14,7 @@ class RequestStatus(Enum):
 class AdoptionRequest:
     user_id: str
     animal_id: str
-    status: str = RequestStatus.APPROVED.value
+    status: str = RequestStatus.PENDING.value
     user_comment: str | None = None
     created_at: datetime = datetime.now(tz=timezone.utc)
     updated_at: datetime | None = None

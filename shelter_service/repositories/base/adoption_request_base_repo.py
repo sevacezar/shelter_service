@@ -15,14 +15,13 @@ class AdoptionRequestBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def update_status(self, id: str, new_status: str) -> AdoptionRequest | None:
-        """Updates adoption request by id with new status"""
+    async def update_status(self, request: AdoptionRequest, new_status: str) -> AdoptionRequest:
+        """Updates adoption request with new status"""
         pass
 
     @abstractmethod
-    async def delete_by_id(self, id: str) -> None:
-        """Deletes adoption request by id"""
-        pass
+    async def delete(self, request: AdoptionRequest) -> None:
+        """Deletes adoption request"""
     
     @abstractmethod
     async def list_by_animal(self, animal_id: str) -> list[Any]:
@@ -32,4 +31,12 @@ class AdoptionRequestBaseRepository(ABC):
     @abstractmethod
     async def list_by_user(self, user_id: str) -> list[Any]:
         """Gets adoption requests list of specific user"""
+        pass
+
+    async def get_all(
+            self,
+            offset: int = 0,
+            limit: int | None = None
+        ) -> list[Any]:
+        """Gets all adoption requests"""
         pass

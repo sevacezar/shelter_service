@@ -3,9 +3,9 @@ from datetime import datetime, timezone
 
 @dataclass
 class AnimalView:
-    user_id: str
     animal_id: str
     viewed_at: datetime = datetime.now(tz=timezone.utc)
+    user_id: str | None = None
     id: str | None = None
 
     def __bool__(self):
@@ -18,4 +18,3 @@ class AnimalView:
     
     def to_dict(self):
         return asdict(self)
-    

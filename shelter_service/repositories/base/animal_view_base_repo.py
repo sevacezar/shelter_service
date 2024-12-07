@@ -15,8 +15,8 @@ class AnimalViewBaseRepository(ABC):
         pass
 
     @abstractmethod
-    async def delete_by_id(self, id: str) -> None:
-        """Deletes animal view by id"""
+    async def delete(self, view: AnimalView) -> None:
+        """Deletes animal view"""
         pass
     
     @abstractmethod
@@ -28,3 +28,10 @@ class AnimalViewBaseRepository(ABC):
     async def list_by_user(self, user_id: str) -> list[Any]:
         """Gets animal view list of specific user"""
         pass
+
+    @abstractmethod
+    async def get_all(self, offset: int = 0, limit: int | None = None) -> list[Any]:
+        """Gets all animal views"""
+        pass
+
+
