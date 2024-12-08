@@ -22,7 +22,7 @@ class DeleteRequestUseCase:
             request_id: str,
     ) -> None:
         user: User | None = await self.user_repo.get_by_id(id=user_id)
-        if not user and user.role not in self.available_roles:
+        if not (user and user.role in self.available_roles):
             raise PermissionError('Update adoption requests status is forbidden')
             
         adoption_request: AdoptionRequest | None = await self.adoption_requests_repo.get_by_id(id=request_id)

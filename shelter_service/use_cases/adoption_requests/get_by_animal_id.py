@@ -21,7 +21,7 @@ class GetRequestsByAnimalIdUseCase:
             animal_id: str,
     ) -> list[Any]:
         user: User | None = await self.user_repo.get_by_id(id=user_id)
-        if not user and user.role not in self.available_roles:
+        if not (user and user.role in self.available_roles):
             raise PermissionError('Get adoption requests by animal_id is forbidden')
             
         adoption_requests: list[Any] = await self.adoption_requests_repo.list_by_animal(animal_id=animal_id)

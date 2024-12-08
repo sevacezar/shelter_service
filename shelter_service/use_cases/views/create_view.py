@@ -28,8 +28,10 @@ class CreateAnimalViewUseCase:
         if not animal:
             raise AnimalNotFound('Animal not found')
         
-        user: User | None = await self.user_repo.get_by_id(id=user_id)
-        user_id: str | None = user.id if user else None
+        if user_id:
+            user: User | None = await self.user_repo.get_by_id(id=user_id)
+            user_id: str | None = user.id if user else None
+
         animal_view: AnimalView = AnimalView(
             animal_id=animal_id,
             user_id=user_id,
