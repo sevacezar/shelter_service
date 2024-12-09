@@ -23,6 +23,6 @@ class AdoptionRequestNotFound(Exception):
     pass
 
 
-class AnimalViewtNotFound(Exception):
+class AnimalViewNotFound(Exception):
     """Exception, when animal view can`t be found"""
     pass

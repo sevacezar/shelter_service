@@ -1,16 +1,12 @@
-from dataclasses import replace
 from unittest.mock import MagicMock
 from uuid import uuid4
 import pytest
 
 from domain.adoption_requests import AdoptionRequest
-from domain.animals import Animal
 from domain.users import User
 from repositories.base.user_base_repo import UserBaseRepository
-from repositories.base.animal_base_repo import AnimalBaseRepository
 from repositories.base.adoption_request_base_repo import AdoptionRequestBaseRepository
 from use_cases.adoption_requests.get_all import GetAllRequestsUseCase
-from use_cases.exceptions import AnimalNotFound
 
 
 async def test_get_all_requests_use_case_success(
