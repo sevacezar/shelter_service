@@ -7,7 +7,7 @@ from domain.users import User
 @pytest.fixture(scope='function')
 def user_domain() -> User:
     user_dict: dict = {
-        'id': uuid4(),
+        'id': str(uuid4()),
         'first_name': 'John',
         'second_name': 'Smith',
         'email': 'jphn@gmail.com',
@@ -21,7 +21,7 @@ def user_domain() -> User:
 
 def test_user_init():
     user_dict: dict = {
-        'id': uuid4(),
+        'id': str(uuid4()),
         'first_name': 'John',
         'second_name': 'Smith',
         'email': 'jphn@gmail.com',
@@ -60,7 +60,7 @@ def test_user_init_with_obligatory_attrs():
 
 def test_user_from_dict():
     user_dict: dict = {
-        'id': 1,
+        'id': '1',
         'first_name': 'John',
         'second_name': 'Smith',
         'email': 'jphn@gmail.com',
@@ -93,7 +93,7 @@ def test_user_to_dict(user_domain: User):
 
 def test_user_update(user_domain: User):
     updated_params: dict = {
-        'id': uuid4(),
+        'id': str(uuid4()),
         'first_name': 'New first name',
         'second_name': 'New second name',
         'email': 'new_email@mail.ru',
@@ -109,4 +109,4 @@ def test_user_update(user_domain: User):
     assert updated_user.email == updated_params.get('email')
     assert updated_user.phone == updated_params.get('phone')
     assert updated_user.hashed_password == updated_params.get('hashed_password')
-    assert updated_user.role != updated_params.get('role')
+    assert updated_user.role == updated_params.get('role')
