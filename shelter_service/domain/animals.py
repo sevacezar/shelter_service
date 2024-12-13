@@ -48,23 +48,50 @@ class CoatType(Enum):
     SHORT: str = 'short'
     MEDIUM: str = 'medium'
     LONG: str = 'long'
+    HAIRLESS: str = 'hairless'
 
 
 class Status(Enum):
     AVAILABLE: str = 'available'
-    UNAVAILAble: str = 'unavailable'  # for example, animal in quarantine
+    UNAVAILABLE: str = 'unavailable'  # for example, animal in quarantine
     ADOPTED: str = 'adopted'
     RESERVED: str = 'reserved'
 
+class Size(Enum):
+    SMALL: str = 'small'
+    MEDIUM: str = 'medium'
+    LARGE: str = 'large'
+    EXTRA_LARGE: str = 'extra-large'
+
+
+class Age(Enum):
+    BABY: str = 'baby'
+    JUNIOUR: str = 'juniour'
+    ADULT: str = 'adult'
+    SENIOR: str = 'senior'
+
+    @classmethod
+    def get_age_category(cls, birth_date: datetime, datetime_now: datetime) -> str:
+        years_diff: int = datetime_now.year - birth_date.year
+        if (datetime_now.month, datetime_now.day) < (birth_date.month, birth_date.day):
+            years_diff -= 1
+
+        if years_diff < 1:
+            return cls.BABY.value
+        if years_diff < 4:
+            return cls.JUNIOUR.value
+        if years_diff < 8:
+            return cls.ADULT.value
+        return cls.SENIOR.value
 
 @dataclass
 class Animal:
     name: str
     color: str
-    weight: int
     birth_date: datetime
     in_shelter_at: datetime
     description: str
+    size: str = Size.MEDIUM.value
     breed: str = 'breedless'
     coat: CoatType = CoatType.MEDIUM.value
     type: AnimalType = AnimalType.DOG.value
@@ -83,6 +110,9 @@ class Animal:
     def __post_init__(self):
         if self.updated_at is None:
             self.updated_at = self.created_at
+
+    def get_age(self, datetime_now: datetime) -> str:
+        return Age.get_age_category(birth_date=self.birth_date, datetime_now=datetime_now)
 
     def add_images(self, images: list[Image]) -> None:
         for image in images:

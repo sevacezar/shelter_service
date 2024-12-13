@@ -11,7 +11,7 @@ def animal_dict() -> dict:
     animal_dict: dict = {
         'name': 'Daisy',
         'color': 'white',
-        'weight': 17,
+        'size': 'medium',
         'birth_date': datetime(2020, 10, 1),
         'in_shelter_at': datetime(2021, 10, 1),
         'updated_at': creating_datetime,
@@ -51,7 +51,7 @@ def test_animal_init(animal_dict: dict):
     assert animal
     assert animal.name == animal_dict.get('name')
     assert animal.color == animal_dict.get('color')
-    assert animal.weight == animal_dict.get('weight')
+    assert animal.size == animal_dict.get('size')
     assert animal.birth_date == animal_dict.get('birth_date')
     assert animal.in_shelter_at == animal_dict.get('in_shelter_at')
     assert animal.updated_at == animal_dict.get('updated_at')
@@ -73,7 +73,6 @@ def test_animal_init_with_obligatory_attrs():
     animal_dict: dict = {
         'name': 'Daisy',
         'color': 'white',
-        'weight': 17,
         'birth_date': datetime(2020, 10, 1),
         'in_shelter_at': datetime(2021, 10, 1),
         'description': 'Funny dog',
@@ -82,7 +81,6 @@ def test_animal_init_with_obligatory_attrs():
     assert animal
     assert animal.name == animal_dict.get('name')
     assert animal.color == animal_dict.get('color')
-    assert animal.weight == animal_dict.get('weight')
     assert animal.birth_date == animal_dict.get('birth_date')
     assert animal.in_shelter_at == animal_dict.get('in_shelter_at')
     assert animal.description == animal_dict.get('description')
@@ -97,13 +95,14 @@ def test_animal_init_with_obligatory_attrs():
     assert animal.has_vaccinations == True
     assert animal.is_sterilized == True
     assert animal.id == None
+    assert animal.size == 'medium'
 
 def test_animal_from_dict(animal_dict: dict):
     animal: Animal = Animal.from_dict(animal_dict)
     assert animal
     assert animal.name == animal_dict.get('name')
     assert animal.color == animal_dict.get('color')
-    assert animal.weight == animal_dict.get('weight')
+    assert animal.size == animal_dict.get('size')
     assert animal.birth_date == animal_dict.get('birth_date')
     assert animal.in_shelter_at == animal_dict.get('in_shelter_at')
     assert animal.updated_at == animal_dict.get('updated_at')
@@ -126,7 +125,7 @@ def test_animal_to_dict(animal: Animal):
     assert animal_dict
     assert animal.name == animal_dict.get('name')
     assert animal.color == animal_dict.get('color')
-    assert animal.weight == animal_dict.get('weight')
+    assert animal.size == animal_dict.get('size')
     assert animal.birth_date == animal_dict.get('birth_date')
     assert animal.in_shelter_at == animal_dict.get('in_shelter_at')
     assert animal.updated_at == animal_dict.get('updated_at')
@@ -274,7 +273,7 @@ def test_animal_with_images_from_dict(animal_dict: dict):
     assert animal
     assert animal.name == animal_dict.get('name')
     assert animal.color == animal_dict.get('color')
-    assert animal.weight == animal_dict.get('weight')
+    assert animal.size == animal_dict.get('size')
     assert animal.birth_date == animal_dict.get('birth_date')
     assert animal.in_shelter_at == animal_dict.get('in_shelter_at')
     assert animal.updated_at == animal_dict.get('updated_at')
@@ -329,3 +328,9 @@ def test_animal_to_dict_with_images(animal: Animal, images: list[Image]):
     assert images_list[0].get('id') == animal.images[0].id
     assert images_list[0].get('relative_path') == animal.images[0].relative_path
     assert images_list[0].get('description') == animal.images[0].description
+
+def test_get_animal_age_category(animal: Animal):
+    birth_date: datetime = datetime(2020, 11, 13)
+    now: datetime = datetime(2024, 11, 10)
+    animal.birth_date = birth_date
+    assert animal.get_age(datetime_now=now) == 'juniour'

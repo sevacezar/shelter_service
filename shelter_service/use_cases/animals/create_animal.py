@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from domain.animals import Animal, CoatType, AnimalGender, AnimalType, Status
+from domain.animals import Animal, CoatType, AnimalGender, AnimalType, Status, Size
 from domain.users import UserRole, User
 from repositories.base.animal_base_repo import AnimalBaseRepository
 from repositories.base.user_base_repo import UserBaseRepository
@@ -21,10 +21,10 @@ class CreateAnimalUseCase:
             user_id: str,
             name: str,
             color: str,
-            weight: int,
             birth_date: datetime,
             in_shelter_at: datetime,
             description: str,
+            size: str = Size.MEDIUM.value,
             breed: str = 'breedless',
             coat: CoatType = CoatType.MEDIUM.value,
             type: AnimalType = AnimalType.DOG.value,
@@ -43,10 +43,10 @@ class CreateAnimalUseCase:
         animal = Animal(
             name=name,
             color=color,
-            weight=weight,
             birth_date=birth_date,
             in_shelter_at=in_shelter_at,
             description=description,
+            size=size,
             breed=breed,
             coat=coat,
             type=type,

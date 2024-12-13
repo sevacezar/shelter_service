@@ -35,7 +35,7 @@ def animal() -> Animal:
     return Animal(
             name='Daysy',
             color='white',
-            weight=17,
+            size='medium',
             birth_date=datetime(2020, 1, 1, tzinfo=timezone.utc),
             in_shelter_at=datetime(2021, 1, 1, tzinfo=timezone.utc),
             description='Fynny dog',

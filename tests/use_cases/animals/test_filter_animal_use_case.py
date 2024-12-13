@@ -18,7 +18,6 @@ async def test_animal_filter_use_case_success():
               Animal(
                     name='Barsik',
                     color='white',
-                    weight=20,
                     birth_date=datetime(2019, 1, 1),
                     in_shelter_at=datetime(2020, 1, 1),
                     description='Some fynny dog',
@@ -27,7 +26,6 @@ async def test_animal_filter_use_case_success():
               Animal(
                     name='Tim',
                     color='white',
-                    weight=30,
                     birth_date=datetime(2019, 1, 1),
                     in_shelter_at=datetime(2020, 1, 1),
                     description='Some fynny dog',

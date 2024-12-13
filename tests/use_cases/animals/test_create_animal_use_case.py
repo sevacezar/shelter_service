@@ -13,7 +13,7 @@ async def test_animal_create_use_case_success(admin: User):
         user_id: str = str(admin.id)
         name: str = 'Daysy'
         color: str = 'white'
-        weight: int = 17
+        size: int = 'medium'
         birth_date: datetime = datetime(2020, 1, 10, tzinfo=timezone.utc)
         in_shelter_at: datetime = datetime(2021, 1, 10, tzinfo=timezone.utc)
         description: str = 'Funny dog'
@@ -23,7 +23,7 @@ async def test_animal_create_use_case_success(admin: User):
         animal_to_create: Animal = Animal(
             name=name,
             color=color,
-            weight=weight,
+            size=size,
             birth_date=birth_date,
             in_shelter_at=in_shelter_at,
             description=description,
@@ -32,7 +32,7 @@ async def test_animal_create_use_case_success(admin: User):
         created_animal: Animal = Animal(
             name=name,
             color=color,
-            weight=weight,
+            size=size,
             birth_date=birth_date,
             in_shelter_at=in_shelter_at,
             description=description,
@@ -54,7 +54,7 @@ async def test_animal_create_use_case_success(admin: User):
              user_id=user_id,
              name=name,
              color=color,
-             weight=weight,
+             size=size,
              birth_date=birth_date,
              in_shelter_at=in_shelter_at,
              description=description,
@@ -69,7 +69,6 @@ async def test_animal_create_use_case_user_not_admin(not_admin_user: User):
         user_id: str = str(not_admin_user.id)
         name: str = 'Daysy'
         color: str = 'white'
-        weight: int = 17
         birth_date: datetime = datetime(2020, 1, 10, tzinfo=timezone.utc)
         in_shelter_at: datetime = datetime(2021, 1, 10, tzinfo=timezone.utc)
         description: str = 'Funny dog'
@@ -79,7 +78,6 @@ async def test_animal_create_use_case_user_not_admin(not_admin_user: User):
         animal_to_create: Animal = Animal(
             name=name,
             color=color,
-            weight=weight,
             birth_date=birth_date,
             in_shelter_at=in_shelter_at,
             description=description,
@@ -99,7 +97,6 @@ async def test_animal_create_use_case_user_not_admin(not_admin_user: User):
                 user_id=user_id,
                 name=name,
                 color=color,
-                weight=weight,
                 birth_date=birth_date,
                 in_shelter_at=in_shelter_at,
                 description=description,
@@ -112,7 +109,6 @@ async def test_animal_create_use_case_user_not_found():
         user_id: str = str(uuid4())
         name: str = 'Daysy'
         color: str = 'white'
-        weight: int = 17
         birth_date: datetime = datetime(2020, 1, 10, tzinfo=timezone.utc)
         in_shelter_at: datetime = datetime(2021, 1, 10, tzinfo=timezone.utc)
         description: str = 'Funny dog'
@@ -133,7 +129,6 @@ async def test_animal_create_use_case_user_not_found():
                 user_id=user_id,
                 name=name,
                 color=color,
-                weight=weight,
                 birth_date=birth_date,
                 in_shelter_at=in_shelter_at,
                 description=description,
