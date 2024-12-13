@@ -12,8 +12,8 @@ class UserMongoRepository(UserBaseRepository):
     @property
     def collection(self) -> AsyncIOMotorCollection:
         return self._collection
-    
-    def _get_user_obj_with_str_id(user_dict: dict) -> User:
+
+    def _get_user_obj_with_str_id(self, user_dict: dict) -> User:
         if user_dict.get('_id'):
             user_dict['id'] = str(user_dict.pop('_id'))
         return User(**user_dict)
@@ -28,7 +28,7 @@ class UserMongoRepository(UserBaseRepository):
     async def get_by_email(self, email: str) -> User | None:
         res = await self._collection.find_one(filter={'email': email})
         if res:
-            return User(self._get_user_obj_with_str_id(user_dict=res))
+            return self._get_user_obj_with_str_id(user_dict=res)
         return None
 
     async def get_by_id(self, id: str) -> User | None:
