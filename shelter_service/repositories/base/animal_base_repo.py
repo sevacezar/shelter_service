@@ -32,7 +32,7 @@ class AnimalBaseRepository(ABC):
     @abstractmethod
     async def get_filtered(
         self,
-        filters: dict[str, Any],
+        filters: dict[str, list],
         offset: int = 0,
         limit: int | None = None,
     ) -> list[Any]:

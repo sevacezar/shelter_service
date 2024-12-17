@@ -57,7 +57,8 @@ class AnimalMongoRepository(AnimalBaseRepository):
 
     async def get_filtered(self, filters: dict[str, Any], offset = 0, limit = None):
         animals: list[Animal] = []
-        filter_dict: dict = {key: {'$in': values} for key, values in filters.items()}
+        filter_dict: dict = {key: ({'$in': value} if isinstance(value, list) else value)
+                             for key, value in filters.items()}
         cursor = self._collection.find(filter=filter_dict)
         if offset > 0:
             cursor = cursor.skip(offset)
@@ -66,5 +67,3 @@ class AnimalMongoRepository(AnimalBaseRepository):
         async for doc in cursor:
             animals.append(self._get_animal_obj_with_str_id(animal_dict=doc))
         return animals
-
-    

@@ -97,7 +97,7 @@ class TestCreateAnimal:
 
         created_animal: Animal = await animal_mongo_repo.create(animal=animal)
         assert created_animal.id is not None
-        
+
         cur_records_count: int = await animal_mongo_repo.collection.count_documents({})
         assert cur_records_count == start_records_count + 1
 
@@ -191,3 +191,40 @@ class TestDeleteAnimal:
         assert start_records_count - cur_records_count == 1
         animal: None = await animal_mongo_repo.get_by_id(id=animal_id)
         assert animal is None
+
+
+class TestGetFiltered:
+    async def test_get_filtered_list_param_get_all_success(self, animal_mongo_repo: AnimalMongoRepository):
+        filters: dict = {'color': ['black', 'white']}
+        cur_records_count: int = await animal_mongo_repo.collection.count_documents({})
+        animals: list[Animal] = await animal_mongo_repo.get_filtered(filters=filters)
+        assert len(animals) == cur_records_count
+        assert set(animal.color for animal in animals) == set(filters['color'])
+
+    async def test_get_filtered_list_param_get_one_success(self, animal_mongo_repo: AnimalMongoRepository):
+        filters: dict = {'color': ['black']}
+        cur_records_count: int = await animal_mongo_repo.collection.count_documents({})
+        animals: list[Animal] = await animal_mongo_repo.get_filtered(filters=filters)
+        assert len(animals) == cur_records_count - 1
+        assert set(animal.color for animal in animals) == set(filters['color'])
+
+    async def test_get_filtered_str_param_get_one_success(self, animal_mongo_repo: AnimalMongoRepository):
+        filters: dict = {'color': 'black'}
+        cur_records_count: int = await animal_mongo_repo.collection.count_documents({})
+        animals: list[Animal] = await animal_mongo_repo.get_filtered(filters=filters)
+        assert len(animals) == cur_records_count - 1
+        assert animals[0].color == filters['color']
+
+    async def test_get_filtered_list_param_get_all_offset_success(self, animal_mongo_repo: AnimalMongoRepository):
+        filters: dict = {'color': ['black', 'white']}
+        offset: int = 1
+        cur_records_count: int = await animal_mongo_repo.collection.count_documents({})
+        animals: list[Animal] = await animal_mongo_repo.get_filtered(filters=filters, offset=offset)
+        assert len(animals) == cur_records_count - 1
+
+    async def test_get_filtered_list_param_get_all_limit_success(self, animal_mongo_repo: AnimalMongoRepository):
+        filters: dict = {'color': ['black', 'white']}
+        limit: int = 1
+        cur_records_count: int = await animal_mongo_repo.collection.count_documents({})
+        animals: list[Animal] = await animal_mongo_repo.get_filtered(filters=filters, limit=limit)
+        assert len(animals) == cur_records_count - 1
