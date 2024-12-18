@@ -33,6 +33,7 @@ class AddImageUseCase:
         filepath: str = await self.storage_service.save(
             file_content=file_content,
             filename=filename,
+            animal_id=animal_id,
         )
 
         image: Image = Image(

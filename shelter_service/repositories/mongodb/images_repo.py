@@ -43,14 +43,17 @@ class AnimalImageMongoRepository(BaseAnimalImageRepository):
 
     async def set_avatar(self, image: Image) -> Image:
         _id: ObjectId = ObjectId(image.id)
-        setting_avatar_res = await self._collection.update_one(filter={'_id': _id}, update={'is_avatar': True})
+        setting_avatar_res = await self._collection.update_one(
+            filter={'_id': _id},
+            update={'$set': {'is_avatar': True}},
+        )
         image.is_avatar = True
         removing_avatar_res = await self._collection.update_many(
             filter={
                 'animal_id': image.animal_id,
                 '_id': {'$ne': _id},
             },
-            update={'is_avatar': False}
+            update={'$set': {'is_avatar': False}},
         )
         return image
 
@@ -58,7 +61,7 @@ class AnimalImageMongoRepository(BaseAnimalImageRepository):
         _id: ObjectId = ObjectId(image.id)
         res = await self._collection.update_one(
             filter={'_id': _id},
-            update={'description': description},
+            update={'$set': {'description': description}},
         )
         image.description = description
         return image

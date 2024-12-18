@@ -31,6 +31,6 @@ class DeleteImageUseCase:
         if not image:
             raise ImageNotFound('Image not found')
 
-        await self.storage_service.delete(file_path=image.relative_path)
+        await self.storage_service.delete(relative_file_path=image.relative_path)
 
         await self.image_repo.delete(image=image)
