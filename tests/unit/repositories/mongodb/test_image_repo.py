@@ -20,7 +20,7 @@ def docs_ids() -> list[dict]:
 def images_dict_list(docs_ids: list[dict]) -> list[dict]:
     images: list[dict] = [
         {
-            'animal_id': str(docs_ids[0].get('animal_id')),
+            'animal_id': docs_ids[0].get('animal_id'),
             'filename': 'funny1.png',
             'relative_path': f'/imgs/{str(docs_ids[0].get("animal_id"))}/{str(docs_ids[0].get("images_ids")[0])}.png',
             'description': 'Funny photo # 1',
@@ -29,7 +29,7 @@ def images_dict_list(docs_ids: list[dict]) -> list[dict]:
             '_id': docs_ids[0].get("images_ids")[0],
         },
         {
-            'animal_id': str(docs_ids[0].get('animal_id')),
+            'animal_id': docs_ids[0].get('animal_id'),
             'filename': 'funny2.png',
             'relative_path': f'/imgs/{str(docs_ids[0].get("animal_id"))}/{str(docs_ids[0].get("images_ids")[1])}.png',
             'description': 'Funny photo # 2',
@@ -38,7 +38,7 @@ def images_dict_list(docs_ids: list[dict]) -> list[dict]:
             '_id':docs_ids[0].get("images_ids")[1],
         },
         {
-            'animal_id': str(docs_ids[1].get('animal_id')),
+            'animal_id': docs_ids[1].get('animal_id'),
             'filename': 'beautiful.png',
             'relative_path': f'/imgs/{str(docs_ids[1].get("animal_id"))}/{str(docs_ids[1].get("images_ids")[0])}.png',
             'description': 'Beautifull photo',
@@ -81,7 +81,7 @@ class TestCreate:
         assert cur_records_count == start_records_count + 1
         stored_image: dict = await image_mongo_repo.collection.find_one({'_id': ObjectId(created_image.id)})
         assert stored_image is not None
-        assert stored_image.get('animal_id') == animal_id
+        assert str(stored_image.get('animal_id')) == animal_id
         assert stored_image.get('filename') == filename
         assert stored_image.get('description') == description
 
@@ -186,4 +186,3 @@ class TestUpdateDescription:
 
         stored_image = await image_mongo_repo.collection.find_one({'_id': ObjectId(image_id)})
         assert stored_image.get('description') == new_description
-

@@ -16,11 +16,13 @@ class AnimalImageMongoRepository(BaseAnimalImageRepository):
     def _get_image_obj_with_str_id(self, image_dict: dict) -> Image:
         if image_dict.get('_id'):
             image_dict['id'] = str(image_dict.pop('_id'))
+        image_dict['animal_id'] = str(image_dict['animal_id'])
         return Image(**image_dict)
 
     async def create(self, image: Image) -> Image:
         image_dict: dict = image.to_dict()
         del image_dict['id']
+        image_dict['animal_id'] = ObjectId(image_dict.get('animal_id'))
         res = await self._collection.insert_one(image_dict)
         image.id = str(res.inserted_id)
         return image
@@ -33,7 +35,8 @@ class AnimalImageMongoRepository(BaseAnimalImageRepository):
         return self._get_image_obj_with_str_id(image_dict=res)
 
     async def get_by_animal_id(self, animal_id: str) -> list[Any]:
-        images = self._collection.find(filter={'animal_id': animal_id})
+        _animal_id: ObjectId = ObjectId(animal_id)
+        images = self._collection.find(filter={'animal_id': _animal_id})
         return [self._get_image_obj_with_str_id(image_dict=i_image)
                 async for i_image in images]
 
@@ -50,7 +53,7 @@ class AnimalImageMongoRepository(BaseAnimalImageRepository):
         image.is_avatar = True
         removing_avatar_res = await self._collection.update_many(
             filter={
-                'animal_id': image.animal_id,
+                'animal_id': ObjectId(image.animal_id),
                 '_id': {'$ne': _id},
             },
             update={'$set': {'is_avatar': False}},

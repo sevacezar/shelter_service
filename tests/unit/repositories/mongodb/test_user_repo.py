@@ -207,7 +207,7 @@ class TestGetAllUsers:
         cur_records_count: int = await user_mongo_repo.collection.count_documents({})
         limit: int = 1
         users: list[User] = await user_mongo_repo.get_all(limit=limit)
-        assert len(users) == cur_records_count - limit
+        assert len(users) == limit
         user: User = users[0]
         assert isinstance(user, User)
         assert user.first_name == users_dict_list[0].get('first_name')
@@ -226,7 +226,7 @@ class TestGetAllUsers:
         offset: int = 1
         limit: int = 1
         users: list[User] = await user_mongo_repo.get_all(offset=offset, limit=limit)
-        assert len(users) == cur_records_count - offset
+        assert len(users) == limit
         user: User = users[0]
         assert isinstance(user, User)
         assert user.first_name == users_dict_list[1].get('first_name')
