@@ -151,3 +151,99 @@ class TestDelete:
         assert start_records_count - cur_records_count == 1
         request: None = await adoption_request_mongo_repo.get_by_id(id=request_id)
         assert request is None
+
+class TestListByAnimal:
+    async def test_list_by_animal_success(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+    ):
+        existing_request: dict = await adoption_request_mongo_repo.collection.find_one()
+        animal_id: str = str(existing_request.get('animal_id'))
+        res: list[AdoptionRequest] = await adoption_request_mongo_repo.list_by_animal(animal_id=animal_id)
+        assert res
+        assert len(res) == 2
+        assert isinstance(res[0], AdoptionRequest)
+
+    async def test_list_by_animal_not_found(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+    ):
+        animal_id: str = str(ObjectId())
+        res: list[AdoptionRequest] = await adoption_request_mongo_repo.list_by_animal(animal_id=animal_id)
+        assert res == []
+
+
+class TestListByUser:
+    async def test_list_by_user_success(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+    ):
+        existing_request: dict = await adoption_request_mongo_repo.collection.find_one()
+        user_id: str = str(existing_request.get('user_id'))
+        res: list[AdoptionRequest] = await adoption_request_mongo_repo.list_by_user(user_id=user_id)
+        assert res
+        assert len(res) == 2
+        assert isinstance(res[0], AdoptionRequest)
+
+    async def test_list_by_user_not_found(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+    ):
+        user_id: str = str(ObjectId())
+        res: list[AdoptionRequest] = await adoption_request_mongo_repo.list_by_user(user_id=user_id)
+        assert res == []
+
+
+class TestGetAll:
+    async def test_get_all_success(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+        ):
+        cur_records_count: int = await adoption_request_mongo_repo.collection.count_documents({})
+        requests: list[AdoptionRequest] = await adoption_request_mongo_repo.get_all()
+        assert cur_records_count == len(requests)
+        request: AdoptionRequest = requests[0]
+        assert isinstance(request, AdoptionRequest)
+
+    async def test_get_all_offset_success(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+        ):
+        cur_records_count: int = await adoption_request_mongo_repo.collection.count_documents({})
+        offset: int = 1
+        requests: list[AdoptionRequest] = await adoption_request_mongo_repo.get_all(offset=offset)
+        assert len(requests) == cur_records_count - offset
+        request: AdoptionRequest = requests[0]
+        assert isinstance(request, AdoptionRequest)
+
+    async def test_get_all_limit_success(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+        ):
+        cur_records_count: int = await adoption_request_mongo_repo.collection.count_documents({})
+        limit: int = 1
+        requests: list[AdoptionRequest] = await adoption_request_mongo_repo.get_all(limit=limit)
+        assert len(requests) == limit
+        request: AdoptionRequest = requests[0]
+        assert isinstance(request, AdoptionRequest)
+
+    async def test_get_all_offset_limit_success(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+        ):
+        cur_records_count: int = await adoption_request_mongo_repo.collection.count_documents({})
+        offset: int = 1
+        limit: int = 1
+        request: list[AdoptionRequest] = await adoption_request_mongo_repo.get_all(offset=offset, limit=limit)
+        assert len(request) == limit
+        request: AdoptionRequest = request[0]
+        assert isinstance(request, AdoptionRequest)
+
+
+    async def test_get_all_big_offset_not_found(
+            self,
+            adoption_request_mongo_repo: AdoptionRequestMongoRepository,
+        ):
+        offset: int = 20
+        request: list[AdoptionRequest] = await adoption_request_mongo_repo.get_all(offset=offset)
+        assert len(request) == 0
