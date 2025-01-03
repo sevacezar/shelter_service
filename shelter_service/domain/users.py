@@ -2,6 +2,12 @@ from dataclasses import dataclass, asdict, fields
 from datetime import datetime, timezone
 from enum import Enum
 
+from passlib.context import CryptContext
+
+
+pwd_context: CryptContext = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
+
 class UserRole(Enum):
     ADMIN: str = 'admin'
     USER: str = 'user'
@@ -39,3 +45,10 @@ class User:
 
     def __bool__(self):
         return True
+    
+    def check_password(self, plain_password: str) -> bool:
+        return pwd_context.verify(plain_password, self.hashed_password)
+
+    @classmethod
+    def get_password_hash(cls, password: str) -> str:
+        return pwd_context.hash(password)

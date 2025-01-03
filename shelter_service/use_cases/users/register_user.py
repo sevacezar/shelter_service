@@ -12,13 +12,14 @@ class RegisterUserUseCase:
         second_name: str,
         email: str,
         phone: str,
-        hashed_password: str,
+        password: str,
         role: UserRole = UserRole.USER.value,
-    ):
+    ) -> User:
         existing_user: User | None = await self.user_repo.get_by_email(email=email)
         if existing_user:
             raise UserAlreadyExists('User with this email already exists')
         
+        hashed_password: str = User.get_password_hash(password=password)
         user = User(
             first_name=first_name,
             second_name=second_name,
