@@ -1,0 +1,673 @@
+<html>
+<head>
+<base href=".">
+<title>Pet Shelter</title>
+<meta charset="UTF-8">
+<style>
+@font-face {
+  font-family: 'Grotesk';
+  src: url('https://fonts.cdnfonts.com/css/grotesk') format('woff2');
+}
+
+:root {
+    --primary: #ff7f50;
+    --secondary: #ff7f50; 
+    --light: #ff7f50;
+    --dark: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;
+    font-family: 'Grotesk', 'Segoe UI', sans-serif;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    background: #fff5ee;
+}
+
+header {
+    background: #ff7f50;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    color: #fff5ee;
+    text-decoration: none;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    height: calc(100vh - 60px);
+}
+
+.filters {
+    background: #ff7f50;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-title {
+    font-weight: 600;  
+    margin-bottom: 0.5rem;
+    color: #fff5ee;
+}
+
+.dropdown-container {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-header {
+    padding: 0.5rem;
+    border: 1px solid #ff7f50;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ff7f50;
+    border-radius: 4px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.dropdown-options.show {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #333333;
+}
+
+.dropdown-option:hover {
+    background: #ff7f50;
+    color: white;
+}
+
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    overflow-y: auto;
+    max-height: 100%;
+    padding-right: 1rem;
+}
+
+.pet-card {
+    background: #ff7f50;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    height: 300px;
+    cursor: pointer;
+}
+
+.pet-card:hover {
+    transform: translateY(-5px);
+}
+
+.pet-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.pet-info {
+    padding: 1rem;
+    height: 80px;
+}
+
+.pet-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff5ee;
+    margin-bottom: 0.5rem;
+}
+
+.pet-details {
+    display: flex;
+    gap: 1rem;
+    color: #333333;
+    font-size: 0.9rem;
+}
+
+footer {
+    background: #ff7f50;
+    color: #333333;
+    padding: 2rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.selected-options {
+    font-size: 0.9rem; 
+    color: #333333;
+}
+
+nav a {
+  color: #333333 !important;
+}
+
+nav a:hover {
+  text-decoration: underline !important;
+}
+
+.logo:hover {
+  text-decoration: underline;
+}
+
+.footer-content h4 {
+    color: #fff5ee;
+}
+
+.footer-content p {
+    color: #333333;
+}
+</style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="https://petshelter.com" class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <path d="M20 4C22 4 28 10 28 14C28 17 26 19 23 19C20 19 17 17 17 14C17 10 18 4 20 4Z" fill="currentColor"/>
+                    <path d="M32 14C34 14 38 18 38 21C38 23 36 25 34 25C32 25 30 23 30 21C30 18 30 14 32 14Z" fill="currentColor"/>
+                    <path d="M8 14C10 14 14 18 14 21C14 23 12 25 10 25C8 25 6 23 6 21C6 18 6 14 8 14Z" fill="currentColor"/>
+                    <path d="M20 36C14 36 10 32 10 26C10 20 14 16 20 16C26 16 30 20 30 26C30 32 26 36 20 36Z" fill="currentColor"/>
+                </svg>
+                Pet Shelter
+            </a>
+            <nav>
+                <a href="https://petshelter.com/about" style="text-decoration: none; margin-left: 1rem;">About</a>
+                <a href="https://petshelter.com/contact" style="text-decoration: none; margin-left: 1rem;">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <aside class="filters">
+            <div class="filter-section">
+                <h3 class="filter-title">Animal Type</h3>
+                <div class="dropdown-container" data-filter="type">
+                    <div class="dropdown-header">
+                        <span class="selected-options">Select animal type...</span>
+                        <span>&#x25bc;</span>
+                    </div>
+                    <div class="dropdown-options">
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="dog">
+                            Dog
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="cat">
+                            Cat
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="rabbit">
+                            Rabbit
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="bird">
+                            Bird
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Age</h3>
+                <div class="dropdown-container" data-filter="age">
+                    <div class="dropdown-header">
+                        <span class="selected-options">Select age ranges...</span>
+                        <span>&#x25bc;</span>
+                    </div>
+                    <div class="dropdown-options">
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="baby">
+                            Baby (0-1 year)
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="young">
+                            Young (1-3 years)
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="adult">
+                            Adult (3-8 years)
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="senior">
+                            Senior (8+ years)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Gender</h3>
+                <div class="dropdown-container" data-filter="gender">
+                    <div class="dropdown-header">
+                        <span class="selected-options">Select gender...</span>
+                        <span>&#x25bc;</span>
+                    </div>
+                    <div class="dropdown-options">
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="male">
+                            Male
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="female">
+                            Female
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Fur Length</h3>
+                <div class="dropdown-container" data-filter="fur">
+                    <div class="dropdown-header">
+                        <span class="selected-options">Select fur length...</span>
+                        <span>&#x25bc;</span>
+                    </div>
+                    <div class="dropdown-options">
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="short">
+                            Short
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="medium">
+                            Medium
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="long">
+                            Long
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Size</h3>
+                <div class="dropdown-container" data-filter="size">
+                    <div class="dropdown-header">
+                        <span class="selected-options">Select size...</span>
+                        <span>&#x25bc;</span>
+                    </div>
+                    <div class="dropdown-options">
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="small">
+                            Small
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="medium">
+                            Medium
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" value="large">
+                            Large
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="pets-grid">
+            <!-- Pet cards will be dynamically generated here -->
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>Contact Us</h4>
+                <p>Phone: (123) 456-7890</p>
+                <p>Email: info@petshelter.com</p>
+            </div>
+            <div>
+                <h4>Address</h4>
+                <p>123 Pet Street</p>
+                <p>Animal City, AC 12345</p>
+            </div>
+            <div>
+                <h4>Hours</h4>
+                <p>Mon-Fri: 9am - 6pm</p>
+                <p>Sat-Sun: 10am - 4pm</p>
+            </div>
+        </div>
+    </footer>
+
+<script>const pets = [{
+  name: "Luna",
+  type: "cat",
+  age: "young",
+  gender: "female",
+  size: "medium",
+  fur: "long",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="50" fill="#666"/>
+            <circle cx="125" cy="85" r="35" fill="#999"/>
+            <circle cx="110" cy="80" r="5" fill="white"/>
+            <circle cx="140" cy="80" r="5" fill="white"/>
+        </svg>`
+}, {
+  name: "Max",
+  type: "dog",
+  age: "adult",
+  gender: "male",
+  size: "large",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="60" fill="#8b4513"/>
+            <circle cx="125" cy="85" r="45" fill="#a0522d"/>
+            <circle cx="110" cy="80" r="6" fill="white"/>
+            <circle cx="140" cy="80" r="6" fill="white"/>
+        </svg>`
+}, {
+  name: "Oliver",
+  type: "cat",
+  age: "senior",
+  gender: "male",
+  size: "small",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="45" fill="#ffa500"/>
+            <circle cx="125" cy="85" r="30" fill="#ff9900"/>
+            <circle cx="110" cy="80" r="4" fill="white"/>
+            <circle cx="140" cy="80" r="4" fill="white"/>
+        </svg>`
+}, {
+  name: "Bella",
+  type: "dog",
+  age: "baby",
+  gender: "female",
+  size: "medium",
+  fur: "medium",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="55" fill="#d2b48c"/>
+            <circle cx="125" cy="85" r="40" fill="#deb887"/>
+            <circle cx="110" cy="80" r="5" fill="white"/>
+            <circle cx="140" cy="80" r="5" fill="white"/>
+        </svg>`
+}, {
+  name: "Hoppy",
+  type: "rabbit",
+  age: "young",
+  gender: "male",
+  size: "small",
+  fur: "medium",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="40" fill="#ffffff"/>
+            <circle cx="125" cy="85" r="30" fill="#eeeeee"/>
+            <circle cx="110" cy="80" r="4" fill="#ff69b4"/>
+            <circle cx="140" cy="80" r="4" fill="#ff69b4"/>
+        </svg>`
+}, {
+  name: "Tweety",
+  type: "bird",
+  age: "adult",
+  gender: "female",
+  size: "small",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="35" fill="#ffff00"/>
+            <circle cx="125" cy="85" r="25" fill="#ffd700"/>
+            <circle cx="110" cy="80" r="3" fill="black"/>
+            <circle cx="140" cy="80" r="3" fill="black"/>
+        </svg>`
+}, {
+  name: "Charlie",
+  type: "dog",
+  age: "adult",
+  gender: "male",
+  size: "large",
+  fur: "medium",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="55" fill="#8b4513"/>
+            <circle cx="125" cy="85" r="40" fill="#a0522d"/>
+            <circle cx="110" cy="80" r="5" fill="white"/>
+            <circle cx="140" cy="80" r="5" fill="white"/>
+        </svg>`
+}, {
+  name: "Lucy",
+  type: "cat",
+  age: "baby",
+  gender: "female",
+  size: "small",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="45" fill="#808080"/>
+            <circle cx="125" cy="85" r="30" fill="#a9a9a9"/>
+            <circle cx="110" cy="80" r="4" fill="white"/>
+            <circle cx="140" cy="80" r="4" fill="white"/>
+        </svg>`
+}, {
+  name: "Rocky",
+  type: "rabbit",
+  age: "young",
+  gender: "male",
+  size: "small",
+  fur: "long",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="40" fill="#d3d3d3"/>
+            <circle cx="125" cy="85" r="30" fill="#e0e0e0"/>
+            <circle cx="110" cy="80" r="4" fill="#ff69b4"/>
+            <circle cx="140" cy="80" r="4" fill="#ff69b4"/>
+        </svg>`
+}, {
+  name: "Milo",
+  type: "bird",
+  age: "senior",
+  gender: "male",
+  size: "small",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="35" fill="#4169e1"/>
+            <circle cx="125" cy="85" r="25" fill="#1e90ff"/>
+            <circle cx="110" cy="80" r="3" fill="black"/>
+            <circle cx="140" cy="80" r="3" fill="black"/>
+        </svg>`
+}, {
+  name: "Daisy",
+  type: "cat",
+  age: "adult",
+  gender: "female",
+  size: "medium",
+  fur: "long",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="50" fill="#deb887"/>
+            <circle cx="125" cy="85" r="35" fill="#d2b48c"/>
+            <circle cx="110" cy="80" r="5" fill="white"/>
+            <circle cx="140" cy="80" r="5" fill="white"/>
+        </svg>`
+}, {
+  name: "Duke",
+  type: "dog",
+  age: "young",
+  gender: "male",
+  size: "large",
+  fur: "medium",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="60" fill="#8b4513"/>
+            <circle cx="125" cy="85" r="45" fill="#a0522d"/>
+            <circle cx="110" cy="80" r="6" fill="white"/>
+            <circle cx="140" cy="80" r="6" fill="white"/>
+        </svg>`
+}, {
+  name: "Coco",
+  type: "rabbit",
+  age: "baby",
+  gender: "female",
+  size: "small",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="40" fill="#8b4513"/>
+            <circle cx="125" cy="85" r="30" fill="#a0522d"/>
+            <circle cx="110" cy="80" r="4" fill="#ff69b4"/>
+            <circle cx="140" cy="80" r="4" fill="#ff69b4"/>
+        </svg>`
+}, {
+  name: "Pepper",
+  type: "bird",
+  age: "adult",
+  gender: "male",
+  size: "small",
+  fur: "short",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="35" fill="#32cd32"/>
+            <circle cx="125" cy="85" r="25" fill="#90ee90"/>
+            <circle cx="110" cy="80" r="3" fill="black"/>
+            <circle cx="140" cy="80" r="3" fill="black"/>
+        </svg>`
+}, {
+  name: "Tiger",
+  type: "cat",
+  age: "young",
+  gender: "male",
+  size: "medium",
+  fur: "medium",
+  image: `<svg width="250" height="200" viewBox="0 0 250 200">
+            <rect width="250" height="200" fill="#f0f0f0"/>
+            <circle cx="125" cy="100" r="50" fill="#ffa500"/>
+            <circle cx="125" cy="85" r="35" fill="#ff8c00"/>
+            <circle cx="110" cy="80" r="5" fill="white"/>
+            <circle cx="140" cy="80" r="5" fill="white"/>
+        </svg>`
+}];
+pets.forEach(pet => {
+  pet.image = pet.image.replace(/#24FFDD/g, '#ff7f50').replace(/#f0f0f0/g, '#fff5ee');
+});
+function renderPets(filteredPets = pets) {
+  const petsGrid = document.querySelector('.pets-grid');
+  petsGrid.innerHTML = filteredPets.map((pet, index) => `
+        <div class="pet-card" data-id="${index}">
+            ${pet.image}
+            <div class="pet-info">
+                <h3 class="pet-name">${pet.name}</h3>
+                <div class="pet-details">
+                    <span>${pet.age}</span>
+                    <span>${pet.gender}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+function updateDropdownText(container) {
+  const selectedOptions = [...container.querySelectorAll('input:checked')].map(input => input.parentElement.textContent.trim());
+  const displayText = container.querySelector('.selected-options');
+  if (selectedOptions.length === 0) {
+    displayText.textContent = `Select ${container.dataset.filter} types...`;
+  } else {
+    displayText.textContent = selectedOptions.join(', ');
+  }
+}
+function applyFilters() {
+  const selectedTypes = [...document.querySelectorAll('.dropdown-container[data-filter="type"] input:checked')].map(input => input.value);
+  const selectedAges = [...document.querySelectorAll('.dropdown-container[data-filter="age"] input:checked')].map(input => input.value);
+  const selectedGenders = [...document.querySelectorAll('.dropdown-container[data-filter="gender"] input:checked')].map(input => input.value);
+  const selectedFurTypes = [...document.querySelectorAll('.dropdown-container[data-filter="fur"] input:checked')].map(input => input.value);
+  const selectedSizes = [...document.querySelectorAll('.dropdown-container[data-filter="size"] input:checked')].map(input => input.value);
+  const filteredPets = pets.filter(pet => {
+    const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(pet.type);
+    const ageMatch = selectedAges.length === 0 || selectedAges.includes(pet.age);
+    const genderMatch = selectedGenders.length === 0 || selectedGenders.includes(pet.gender);
+    const furMatch = selectedFurTypes.length === 0 || selectedFurTypes.includes(pet.fur);
+    const sizeMatch = selectedSizes.length === 0 || selectedSizes.includes(pet.size);
+    return typeMatch && ageMatch && genderMatch && furMatch && sizeMatch;
+  });
+  renderPets(filteredPets);
+}
+document.querySelectorAll('.dropdown-container').forEach(container => {
+  const header = container.querySelector('.dropdown-header');
+  const options = container.querySelector('.dropdown-options');
+  header.addEventListener('click', () => {
+    options.classList.toggle('show');
+  });
+  container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      updateDropdownText(container);
+      applyFilters();
+    });
+  });
+  document.addEventListener('click', e => {
+    if (!container.contains(e.target)) {
+      options.classList.remove('show');
+    }
+  });
+});
+renderPets();
+document.querySelector('.pets-grid').addEventListener('click', e => {
+  const card = e.target.closest('.pet-card');
+  if (card) {
+    const petId = card.dataset.id;
+    window.location.href = `https://petshelter.com/pets/${petId}`;
+  }
+});</script>
+
+</body>
+</html>
