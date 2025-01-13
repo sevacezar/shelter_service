@@ -1,0 +1,278 @@
+<html><head><base href="." />
+<meta charset="UTF-8">
+<title>Детальная страница питомца</title>
+<style>
+  :root {
+    --primary: #FF7F50;
+    --secondary: #FFA07A;
+    --bg-light: #FFF5EE;
+    --text: #333;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  body {
+    background-color: var(--bg-light);
+    color: var(--text);
+  }
+
+  .navbar {
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .pet-profile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .pet-gallery {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .thumbnail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .thumbnail {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .thumbnail:hover {
+    transform: scale(1.05);
+  }
+
+  .pet-info h1 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .info-block {
+    margin-bottom: 2rem;
+  }
+
+  .info-block h2 {
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .basic-info {
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+
+  .basic-info p {
+    margin-bottom: 0.5rem;
+  }
+
+  .characteristics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .characteristic-item {
+    background: var(--bg-light);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .adoption-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .adoption-button:hover {
+    background: var(--secondary);
+  }
+
+  .gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+  }
+
+  .nav-button {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    pointer-events: auto;
+  }
+
+  .nav-button:hover {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .nav-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--primary);
+  }
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="https://shelter.example.com" style="color: var(--primary); text-decoration: none; font-size: 1.5rem;">
+        🐾 Shelter Friend
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="pet-profile">
+      <div class="pet-gallery">
+        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1" alt="Главное фото Барона" class="main-image">
+        <div class="gallery-nav">
+          <button class="nav-button prev-button">
+            <svg viewBox="0 0 24 24">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <button class="nav-button next-button">
+            <svg viewBox="0 0 24 24">
+              <path d="M10.59 6L12 7.41 17.17 12l-5.17 4.59L10.59 18l6-6z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="thumbnail-grid">
+          <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b" alt="Барон играет" class="thumbnail">
+          <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8" alt="Барон отдыхает" class="thumbnail">
+          <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d" alt="Барон на прогулке" class="thumbnail">
+        </div>
+      </div>
+
+      <div class="pet-info">
+        <h1>Барон</h1>
+        
+        <div class="basic-info">
+          <p><strong>Возраст:</strong> 2 года</p>
+          <p><strong>Пол:</strong> Мальчик</p>
+          <p><strong>Размер:</strong> Крупный</p>
+        </div>
+
+        <div class="info-block">
+          <h2>О питомце</h2>
+          <p>Барон - энергичный и дружелюбный пес, который ищет любящую семью. Он отлично ладит с детьми и другими собаками, обожает длительные прогулки и активные игры. Барон прошел базовый курс дрессировки и знает основные команды.</p>
+        </div>
+
+        <div class="info-block">
+          <h2>Дополнительная информация</h2>
+          <p>Вакцинирован, кастрирован. Имеет ветеринарный паспорт.</p>
+          <p>Подходит для семей с: детьми, собаками и другими животными.</p>
+        </div>
+
+        <button class="adoption-button">Хочу приютить Барона</button>
+      </div>
+    </div>
+  </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const mainImage = document.querySelector('.main-image');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  const prevButton = document.querySelector('.prev-button');
+  const nextButton = document.querySelector('.next-button');
+  
+  let allImages = [mainImage.src, ...Array.from(thumbnails).map(thumb => thumb.src)];
+  let currentImageIndex = 0;
+
+  function updateMainImage(newIndex) {
+    if (newIndex < 0) newIndex = allImages.length - 1;
+    if (newIndex >= allImages.length) newIndex = 0;
+    
+    currentImageIndex = newIndex;
+    
+    mainImage.animate([
+      { opacity: 0.5 },
+      { opacity: 1 }
+    ], {
+      duration: 300,
+      easing: 'ease-in-out'
+    });
+    
+    mainImage.src = allImages[currentImageIndex];
+
+    thumbnails.forEach((thumbnail, idx) => {
+      let thumbIndex = (currentImageIndex + idx + 1) % allImages.length;
+      thumbnail.src = allImages[thumbIndex];
+    });
+  }
+
+  prevButton.addEventListener('click', () => {
+    updateMainImage(currentImageIndex - 1);
+  });
+
+  nextButton.addEventListener('click', () => {
+    updateMainImage(currentImageIndex + 1);
+  });
+  
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', function() {
+      const clickedIndex = index + 1; 
+      updateMainImage(clickedIndex);
+    });
+  });
+
+  const adoptionButton = document.querySelector('.adoption-button');
+  adoptionButton.addEventListener('click', function() {
+    alert('Спасибо за интерес к Барону! Мы свяжемся с вами для обсуждения деталей усыновления.');
+  });
+});
+</script>
+</body>
+</html>
