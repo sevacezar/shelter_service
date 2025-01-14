@@ -3,6 +3,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+from domain.animals import AnimalType, AnimalGender, CoatType, Size, Age
+from web.fastapi.animals.filters import FiltersManager
+
 app = FastAPI()
 
 templates = Jinja2Templates(directory='web/fastapi/templates')
@@ -12,11 +15,12 @@ animals_db = [
     {
         "id": '1',
         "name": "Луна",
-        "type": "cat",
+        'animal_type': AnimalType.CAT.value,
         "age": "3",
-        "gender": "девочка",
-        "size": "средний",
-        "fur": "long",
+        'age_type': Age.JUNIOUR.value,
+        'gender': AnimalGender.FEMALE.value,
+        'size': Size.MEDIUM.value,
+        'coat': CoatType.SHORT.value,
         'main_photo': {'path': '/static/images/1/photo.jpg', 'description': 'Супер милое фото!'},
         'additional_photos': [
             {'path': '/static/images/1/photo_1.jpg', 'description': 'Еще милое фото1'},
@@ -27,9 +31,63 @@ animals_db = [
         'health': 'Вакцинирован, кастрирован. Имеет ветеринарный паспорт.',
         'ok_with': 'Подходит для семей с: детьми, собаками и другими животными.',
      },
-    {"id": '2', "name": "Max", "type": "dog", "age": "adult", "gender": "male", "size": "large", "fur": "short"},
-    {"id": '3', "name": "Charlie", "type": "dog", "age": "baby", "gender": "male", "size": "small", "fur": "medium"},
-    {"id": '4', "name": "Lula", "type": "dog", "age": "baby", "gender": "male", "size": "small", "fur": "medium"},
+     {
+        "id": '2',
+        "name": "Бруня",
+        'animal_type': AnimalType.DOG.value,
+        "age": "8",
+        'age_type': Age.ADULT.value,
+        'gender': AnimalGender.MALE.value,
+        'size': Size.EXTRA_LARGE.value,
+        'coat': CoatType.LONG.value,
+        'main_photo': {'path': '/static/images/2/photo.jpg', 'description': 'Супер милое фото!'},
+        'additional_photos': [
+            {'path': '/static/images/1/photo_1.jpg', 'description': 'Еще милое фото1'},
+            {'path': '/static/images/1/photo_2.jpg', 'description': 'Еще милое фото2'},
+            {'path': '/static/images/1/photo_3.jpg', 'description': 'Еще милое фото3'},
+        ],
+        'description': 'энергичный и дружелюбный пес, который ищет любящую семью. Он отлично ладит с детьми и другими собаками, обожает длительные прогулки и активные игры. Барон прошел базовый курс дрессировки и знает основные команды.',
+        'health': 'Вакцинирован, кастрирован. Имеет ветеринарный паспорт.',
+        'ok_with': 'Подходит для семей с: детьми, собаками и другими животными.',
+     },
+     {
+        "id": '3',
+        "name": "Леопольд",
+        'animal_type': AnimalType.CAT.value,
+        "age": "1",
+        'age_type': Age.BABY.value,
+        'gender': AnimalGender.MALE.value,
+        'size': Size.SMALL.value,
+        'coat': CoatType.MEDIUM.value,
+        'main_photo': {'path': '/static/images/3/photo.jpg', 'description': 'Супер милое фото!'},
+        'additional_photos': [
+            {'path': '/static/images/1/photo_1.jpg', 'description': 'Еще милое фото1'},
+            {'path': '/static/images/1/photo_2.jpg', 'description': 'Еще милое фото2'},
+            {'path': '/static/images/1/photo_3.jpg', 'description': 'Еще милое фото3'},
+        ],
+        'description': 'энергичный и дружелюбный пес, который ищет любящую семью. Он отлично ладит с детьми и другими собаками, обожает длительные прогулки и активные игры. Барон прошел базовый курс дрессировки и знает основные команды.',
+        'health': 'Вакцинирован, кастрирован. Имеет ветеринарный паспорт.',
+        'ok_with': 'Подходит для семей с: детьми, собаками и другими животными.',
+     },
+     {
+        "id": '4',
+        "name": "Дейзи",
+        'animal_type': AnimalType.DOG.value,
+        "age": "12",
+        'age_type': Age.SENIOR.value,
+        'gender': AnimalGender.FEMALE.value,
+        'size': Size.MEDIUM.value,
+        'coat': CoatType.SHORT.value,
+        'main_photo': {'path': '/static/images/4/photo.jpg', 'description': 'Супер милое фото!'},
+        'additional_photos': [
+            {'path': '/static/images/1/photo_1.jpg', 'description': 'Еще милое фото1'},
+            {'path': '/static/images/1/photo_2.jpg', 'description': 'Еще милое фото2'},
+            {'path': '/static/images/1/photo_3.jpg', 'description': 'Еще милое фото3'},
+        ],
+        'description': 'энергичный и дружелюбный пес, который ищет любящую семью. Он отлично ладит с детьми и другими собаками, обожает длительные прогулки и активные игры. Барон прошел базовый курс дрессировки и знает основные команды.',
+        'health': 'Вакцинирован, кастрирован. Имеет ветеринарный паспорт.',
+        'ok_with': 'Подходит для семей с: детьми, собаками и другими животными.',
+     },
 
     # Добавьте больше данных...
 ]
@@ -37,20 +95,20 @@ animals_db = [
 def filter_animals(
     animals: list[dict],
     animal_type: list[str] | None = None,
-    age: list[str] | None = None,
+    age_type: list[str] | None = None,
     gender: list[str] | None = None,
-    fur: list[str] | None = None,
+    coat: list[str] | None = None,
     size: list[str] | None = None
 ) -> list[dict]:
     filtered = animals
     if animal_type:
-        filtered = [a for a in filtered if a["type"] in animal_type]
-    if age:
-        filtered = [a for a in filtered if a["age"] in age]
+        filtered = [a for a in filtered if a["animal_type"] in animal_type]
+    if age_type:
+        filtered = [a for a in filtered if a["age_type"] in age_type]
     if gender:
         filtered = [a for a in filtered if a["gender"] in gender]
-    if fur:
-        filtered = [a for a in filtered if a["fur"] in fur]
+    if coat:
+        filtered = [a for a in filtered if a["coat"] in coat]
     if size:
         filtered = [a for a in filtered if a["size"] in size]
     return filtered
@@ -59,17 +117,17 @@ def filter_animals(
 async def home(
     request: Request,
     animal_type: list[str] | None = Query(None),
-    age: list[str] | None = Query(None),
+    age_type: list[str] | None = Query(None),
     gender: list[str] | None = Query(None),
-    fur: list[str] | None = Query(None),
+    coat: list[str] | None = Query(None),
     size: list[str] | None = Query(None),
 ):
     filtered_animals = filter_animals(
         animals_db,
         animal_type,
-        age,
+        age_type,
         gender,
-        fur,
+        coat,
         size,
     )
     return templates.TemplateResponse(
@@ -78,6 +136,7 @@ async def home(
             'request': request,
             'animals': filtered_animals,
             'query_params': request.query_params,
+            'filters': FiltersManager.get_filters_data_with_options(),
         }
     )
 

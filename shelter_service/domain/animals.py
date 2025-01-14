@@ -34,54 +34,22 @@ class Image:
     #     self.relative_path = prefix + str(self.id) + '.' + image_extension
 
 
-class FilterEnum(Enum):
-    """Base class for enum-filters"""
 
-    @classmethod
-    def get_data(cls) -> dict:
-        return {
-            'name': cls.Meta.name,
-            'query_param_name': cls.Meta.query_param_name,
-            'label_name': cls.Meta.label_name,
-            'options': [item.value for item in cls]
-        }
-
-    class Meta:
-        name: str = 'Фильтр'
-        query_param_name: str = 'filter'
-        label_name: str = 'Выберите опцию'
-
-
-class AnimalType(FilterEnum):
+class AnimalType(Enum):
     CAT: str = 'Кошка'
     DOG: str = 'Собака'
 
-    class Meta:
-        name: str = 'Тип животного'
-        query_param_name: str = 'type'
-        label_name: str = 'Выберите тип питомца'
 
-
-class AnimalGender(FilterEnum):
+class AnimalGender(Enum):
     MALE: str = 'Мальчик'
     FEMALE: str = 'Девочка'
 
-    class Meta:
-        name: str = 'Пол'
-        query_param_name: str = 'gender'
-        label_name: str = 'Выберите пол'
 
-
-class CoatType(FilterEnum):
+class CoatType(Enum):
     SHORT: str = 'Короткая'
     MEDIUM: str = 'Средняя'
     LONG: str = 'Длинная'
     HAIRLESS: str = 'Без шерсти'
-
-    class Meta:
-        name: str = 'Длина шерсти'
-        query_param_name: str = 'coat'
-        label_name: str = 'Выберите тип шерсти'
 
 
 class Status(Enum):
@@ -91,28 +59,18 @@ class Status(Enum):
     RESERVED: str = 'reserved'
 
 
-class Size(FilterEnum):
+class Size(Enum):
     SMALL: str = 'Маленький'
     MEDIUM: str = 'Средний'
     LARGE: str = 'Большой'
     EXTRA_LARGE: str = 'Очень большой'
 
-    class Meta:
-        name: str = 'Размер'
-        query_param_name: str = 'size'
-        label_name: str = 'Выберите размер'
 
-
-class Age(FilterEnum):
+class Age(Enum):
     BABY: str = 'Щенок/котенок'
     JUNIOUR: str = 'Подросток'
     ADULT: str = 'Взрослый'
     SENIOR: str = 'Пожилой'
-
-    class Meta:
-        name: str = 'Возраст'
-        query_param_name: str = 'age'
-        label_name: str = 'Выберите возраст'
 
     @classmethod
     def get_age_category(cls, birth_date: datetime, datetime_now: datetime) -> str:
@@ -128,9 +86,8 @@ class Age(FilterEnum):
             return cls.ADULT.value
         return cls.SENIOR.value
 
-    @classmethod
-    def get_data(cls, birth_date: datetime, datetime_now: datetime):
-        # TODO
+        
+
 @dataclass
 class Animal:
     name: str

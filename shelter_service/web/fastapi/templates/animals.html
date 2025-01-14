@@ -13,6 +13,7 @@
                 <div class="dropdown-container" data-filter="type">
                     <div class="dropdown-header">
                         <span class="selected-options">
+                            <!-- Отобразить выбранные опции фильтров после фильтрации -->
                             {% if query_params.getlist(filter.query_param_name) %}
                                 {{ query_params.getlist(filter.query_param_name) | join (", ") }}
                             {% else %}
@@ -25,7 +26,7 @@
                         {% for option in filter.options %}
                         <label class="dropdown-option">
                             <input type="checkbox" name="{{ filter.query_param_name }}" value="{{ option }}"
-                                {% if option in query_params.getlist(filter.query_param_name) %}checked{% endif %}>
+                                {% if option in query_params.getlist(filter.query_param_name) %}checked{% endif %}> 
                             {{ option }}
                         </label>
                         {% endfor %}
@@ -206,13 +207,13 @@
         {% for pet in animals %}
             <a href="/animals/{{ pet.id }}" class="pet-card"
                 data-id="{{ pet.id }}"
-                data-type="{{ pet.type }}"
-                data-age="{{ pet.age }}"
+                data-type="{{ pet.animal_type }}"
+                data-age="{{ pet.age_type }}"
                 data-gender="{{ pet.gender }}"
                 data-fur="{{ pet.coat }}"
                 data-sixe="{{ pet.size }}">
                 <div class="pet-image">
-                    <img src="{{ pet.main_photo_path }}" alt="{{ pet.name }}">
+                    <img src="{{ pet.main_photo.path }}" alt="{{ pet.name }}">
                     <!-- <svg width="250" height="200" viewBox="0 0 250 200">
                         <rect width="250" height="200" fill="#fff5ee"/>
                         <circle cx="125" cy="100" r="50" fill="#ff7f50"/>
@@ -221,7 +222,7 @@
                 <div class="pet-info">
                     <h3 class="pet-name">{{ pet.name }}</h3>
                     <div class="pet-details">
-                        <span>{{ pet.age }}</span>
+                        <span>{{ pet.age_type }}</span>
                         <span>{{ pet.gender }}</span>
                     </div>
                 </div>
