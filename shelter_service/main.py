@@ -9,7 +9,24 @@ templates = Jinja2Templates(directory='web/fastapi/templates')
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 animals_db = [
-    {"id": '1', "name": "Luna", "type": "cat", "age": "young", "gender": "female", "size": "medium", "fur": "long"},
+    {
+        "id": '1',
+        "name": "Луна",
+        "type": "cat",
+        "age": "3",
+        "gender": "девочка",
+        "size": "средний",
+        "fur": "long",
+        'main_photo': {'path': '/static/images/1/photo.jpg', 'description': 'Супер милое фото!'},
+        'additional_photos': [
+            {'path': '/static/images/1/photo_1.jpg', 'description': 'Еще милое фото1'},
+            {'path': '/static/images/1/photo_2.jpg', 'description': 'Еще милое фото2'},
+            {'path': '/static/images/1/photo_3.jpg', 'description': 'Еще милое фото3'},
+        ],
+        'description': 'энергичный и дружелюбный пес, который ищет любящую семью. Он отлично ладит с детьми и другими собаками, обожает длительные прогулки и активные игры. Барон прошел базовый курс дрессировки и знает основные команды.',
+        'health': 'Вакцинирован, кастрирован. Имеет ветеринарный паспорт.',
+        'ok_with': 'Подходит для семей с: детьми, собаками и другими животными.',
+     },
     {"id": '2', "name": "Max", "type": "dog", "age": "adult", "gender": "male", "size": "large", "fur": "short"},
     {"id": '3', "name": "Charlie", "type": "dog", "age": "baby", "gender": "male", "size": "small", "fur": "medium"},
     {"id": '4', "name": "Lula", "type": "dog", "age": "baby", "gender": "male", "size": "small", "fur": "medium"},

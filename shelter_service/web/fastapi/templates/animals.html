@@ -5,8 +5,56 @@
 {% block content %}
 <div class="main-content">
     <aside class="filters">
+        <!-- Фильтры животных -->
         <form method="get" action="/">
+            {% for filter in filters %}
             <div class="filter-section">
+                <h3 class="filter-title">{{ filter.name }}</h3>
+                <div class="dropdown-container" data-filter="type">
+                    <div class="dropdown-header">
+                        <span class="selected-options">
+                            {% if query_params.getlist(filter.query_param_name) %}
+                                {{ query_params.getlist(filter.query_param_name) | join (", ") }}
+                            {% else %}
+                            {{ filter.label_name }}
+                            {% endif %}
+                        </span>
+                        <span>&#x25bc;</span>
+                    </div>
+                    <div class="dropdown-options">
+                        {% for option in filter.options %}
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="{{ filter.query_param_name }}" value="{{ option }}"
+                                {% if option in query_params.getlist(filter.query_param_name) %}checked{% endif %}>
+                            {{ option }}
+                        </label>
+                        {% endfor %}
+                        <!-- <label class="dropdown-option">
+                            <input type="checkbox" name="{{ filter.query_param_name }}" value="dog"
+                                {% if "dog" in query_params.getlist("animal_type") %}checked{% endif %}>
+                            Dog
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="animal_type" value="cat"
+                                {% if "cat" in query_params.getlist("animal_type") %}checked{% endif %}>
+                            Cat
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="animal_type" value="rabbit"
+                                {% if "rabbit" in query_params.getlist("animal_type") %}checked{% endif %}>
+                            Rabbit
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="animal_type" value="bird"
+                                {% if "bird" in query_params.getlist("animal_type") %}checked{% endif %}>
+                            Bird
+                        </label> -->
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- <div class="filter-section">
                 <h3 class="filter-title">Animal Type</h3>
                 <div class="dropdown-container" data-filter="type">
                     <div class="dropdown-header">
@@ -150,9 +198,8 @@
                         </label>
                     </div>
                 </div>
-            </div>
-            <!-- Остальные фильтры аналогично -->
-            <button type="submit" class="filter-button">Apply Filters</button>
+            </div> -->
+            <button type="submit" class="filter-button">Отфильтровать</button>
         </form>
     </aside>
     <section class="pets-grid">
@@ -160,12 +207,12 @@
             <a href="/animals/{{ pet.id }}" class="pet-card"
                 data-id="{{ pet.id }}"
                 data-type="{{ pet.type }}"
-                data-age="{{ pet.age}}"
+                data-age="{{ pet.age }}"
                 data-gender="{{ pet.gender }}"
-                data-fur="{{ pet.fur }}"
+                data-fur="{{ pet.coat }}"
                 data-sixe="{{ pet.size }}">
                 <div class="pet-image">
-                    <img src="/static/images/{{ pet.id }}/photo.jpg" alt="{{ pet.name }}">
+                    <img src="{{ pet.main_photo_path }}" alt="{{ pet.name }}">
                     <!-- <svg width="250" height="200" viewBox="0 0 250 200">
                         <rect width="250" height="200" fill="#fff5ee"/>
                         <circle cx="125" cy="100" r="50" fill="#ff7f50"/>

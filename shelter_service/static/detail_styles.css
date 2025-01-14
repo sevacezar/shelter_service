@@ -1,0 +1,160 @@
+:root {
+    --primary: #FF7F50;
+    --secondary: #FFA07A;
+    --bg-light: #FFF5EE;
+    --text: #333;
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text);
+}
+
+/* .navbar {
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+} */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.pet-profile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.pet-gallery {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.thumbnail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.thumbnail:hover {
+    transform: scale(1.05);
+}
+
+.pet-info h1 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.info-block {
+    margin-bottom: 2rem;
+}
+
+.info-block h2 {
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+}
+
+.basic-info {
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.basic-info p {
+    margin-bottom: 0.5rem;
+}
+
+.characteristics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.characteristic-item {
+    background: var(--bg-light);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.adoption-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.adoption-button:hover {
+    background: var(--secondary);
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.nav-button {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    pointer-events: auto;
+}
+
+.nav-button:hover {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.nav-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--primary);
+}
