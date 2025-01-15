@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Административная панель{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/admin_styles.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <h2>Административная панель</h2>
+        <nav class="entity-nav">
+            <a href="#" class="entity-link active" data-entity="users">
+                <i class="fas fa-users"></i> Пользователи
+            </a>
+            <a href="#" class="entity-link" data-entity="pets">
+                <i class="fas fa-paw"></i> Питомцы
+            </a>
+            <a href="#" class="entity-link" data-entity="views">
+                <i class="fas fa-eye"></i> Просмотры
+            </a>
+            <a href="#" class="entity-link" data-entity="adoptions">
+                <i class="fas fa-heart"></i> Заявки на усыновление
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="admin-content">
+        {% block admin_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

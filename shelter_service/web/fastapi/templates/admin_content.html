@@ -1,0 +1,39 @@
+{% extends "admin_base.html" %}
+
+{% block title %}{{ entity_title }}{% endblock %}
+
+{% block admin_content %}
+<div class="content-header">
+    <h1>{{ entity_title }}</h1>
+    <button class="add-button">
+        <i class="fas fa-plus"></i> Добавить
+    </button>
+</div>
+
+<div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Поиск..."
+        autocomplete="off"
+    >
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Данные загружаются через JS -->
+        </tbody>
+    </table>
+</div>
+{% endblock %}

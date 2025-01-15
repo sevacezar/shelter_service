@@ -1,0 +1,347 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Панель администратора | Shelter Friend</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #FF7F50;
+      --secondary: #FFA07A;
+      --bg-light: #FFF5EE;
+      --text: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text);
+    }
+
+    .navbar {
+      background-color: white;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .admin-layout {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      background-color: var(--bg-light);
+      padding: 1rem;
+      width: 250px;
+      border-right: 1px solid #ddd;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 1rem;
+    }
+
+    .entity-nav {
+      margin-bottom: 2rem;
+    }
+
+    .entity-link {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .entity-link.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .entity-link:hover {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .content {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .add-button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .add-button:hover {
+      background-color: var(--secondary);
+    }
+
+    .data-table-wrapper {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .data-table th, .data-table td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: var(--bg-light);
+    }
+
+    .footer {
+      background-color: var(--bg-light);
+      padding: 1rem;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .cancel-button {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .cancel-button:hover {
+      background-color: var(--primary);
+    }
+
+    .delete-button {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .delete-button:hover {
+      background-color: var(--secondary);
+    }
+
+    .close-button {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .close-button:hover {
+      background-color: var(--primary);
+    }
+
+    .save-button {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .save-button:hover {
+      background-color: var(--secondary);
+    }
+
+    .search-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0.5rem;
+      color: #ccc;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      padding-left: 2.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="https://shelter.example.com" class="logo">
+        🐾 Shelter Friend
+      </a>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <h2>Управление</h2>
+      <nav class="entity-nav">
+        <a href="#" class="entity-link active" data-entity="users">
+          <i class="fas fa-users"></i> Пользователи
+        </a>
+        <a href="#" class="entity-link" data-entity="pets">
+          <i class="fas fa-paw"></i> Питомцы
+        </a>
+        <a href="#" class="entity-link" data-entity="views">
+          <i class="fas fa-eye"></i> Просмотры питомцев
+        </a>
+        <a href="#" class="entity-link" data-entity="adoptions">
+          <i class="fas fa-heart"></i> Заявки на усыновление
+        </a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="content-header">
+        <h1>Пользователи</h1>
+        <button class="add-button">
+          <i class="fas fa-plus"></i> Добавить
+        </button>
+      </div>
+
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Поиск..."
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Имя</th>
+              <th>Email</th>
+              <th>Роль</th>
+              <th>Дата регистрации</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Data will be inserted here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2023 Shelter Friend. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <!-- View Modal -->
+  <div class="modal" id="viewModal">
+    <div class="modal-content">
+      <h2 class="modal-title">Просмотр записи</h2>
+      <div id="viewContent"></div>
+      <div class="modal-buttons">
+        <button class="button close-button" id="closeView">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h2 class="modal-title">Редактирование записи</h2>
+      <form id="editForm">
+        <div id="editContent"></div>
+        <div class="modal-buttons">
+          <button type="button" class="button close-button" id="closeEdit">Отмена</button>
+          <button type="button" class="button save-button" id="saveEdit">Внести изменения</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal" id="deleteModal">
+    <div class="modal-content">
+      <h2 class="modal-title">Подтверждение удаления</h2>
+      <p>Вы уверены, что хотите удалить этот элемент?</p>
+      <div class="modal-buttons">
+        <button class="button cancel-button" id="cancelDelete">Отмена</button>
+        <button class="button delete-button" id="confirmDelete">Удалить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Modal -->
+  <div class="modal" id="addModal">
+    <div class="modal-content">
+      <h2 class="modal-title">Добавить запись</h2>
+      <form id="addForm">
+        <div id="addContent"></div>
+        <div class="modal-buttons">
+          <button type="button" class="button close-button" id="closeAdd">Отмена</button>
+          <button type="button" class="button save-button" id="confirmAdd">Добавить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
