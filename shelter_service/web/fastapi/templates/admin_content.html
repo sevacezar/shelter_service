@@ -1,38 +1,38 @@
 {% extends "admin_base.html" %}
 
-{% block title %}{{ entity_title }}{% endblock %}
+{% block title %}{{ entity.title }}{% endblock %}
 
 {% block admin_content %}
 <div class="content-header">
-    <h1>{{ entity_title }}</h1>
-    <button class="add-button">
+    <h1>{{ entity.title }}</h1>
+    <a href="/admin/{{ entity.name }}/add" class="add-button">
         <i class="fas fa-plus"></i> Добавить
-    </button>
-</div>
-
-<div class="search-container">
-    <i class="fas fa-search search-icon"></i>
-    <input
-        type="text"
-        id="searchInput"
-        class="search-input"
-        placeholder="Поиск..."
-        autocomplete="off"
-    >
+    </a>
 </div>
 
 <div class="data-table-wrapper">
     <table class="data-table">
         <thead>
             <tr>
-                {% for column in columns %}
-                <th>{{ column }}</th>
+                {% for column in entity.columns %}
+                <th>{{ column.label }}</th>
                 {% endfor %}
                 <th>Действия</th>
             </tr>
         </thead>
-        <tbody id="tableBody">
-            <!-- Данные загружаются через JS -->
+        <tbody>
+            {% for item in entity.items %}
+            <tr>
+                {% for column in entity.columns}
+                <td>{{ item[column.name] }}</td>
+                {% endfor %}
+                <td>
+                    <a href="/admin/{{ entity.name }}/{{ item.id }}/detail" class="button view-button">Просмотр</a>
+                    <a href="/admin/{{ entity.name }}/{{ item.id }}/edit" class="button edit-button">Редактировать</a>
+                    <a href="/admin/{{ entity.name }}/{{ item.id }}/delate" class="button delete-button" onclick="return confirm('Вы уверены?');">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

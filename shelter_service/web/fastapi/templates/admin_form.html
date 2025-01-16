@@ -1,0 +1,29 @@
+{% extends "admin_base.html" %}
+
+{% block title %}{{ entity }} - {{ action }}{% endblock %}
+
+{% block admin_content %}
+<div class="form-container">
+    <h1>{{ action }} {{ entity }}</h1>
+    <form action="/admin/{{ entity }}/save">
+        {% if item.id %}
+        <input type="hidden" name="id" value="{{ item.id }}">
+        {% endif %}
+        {% for field, placeholder in form_fields.items() %}
+        <div class form-group>
+            <label for="{{ field }}">{{ field|capitalize }}</label>
+            <input
+                type="text"
+                id="{{ field }}"
+                name="{{ field }}"
+                placeholder="{{ placeholder }}"
+                value="{{ item[field] if item and field in item else '' }}"
+                required
+            >
+        </div>
+        {% endfor %}
+        <button type="submit" class="button save-button">Сохранить</button>
+    </form>
+    
+</div>
+{% endblock %}
