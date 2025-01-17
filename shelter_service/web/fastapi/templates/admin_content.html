@@ -21,9 +21,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in entity.items %}
+            {% for item in entity.items_ %}
             <tr>
-                {% for column in entity.columns}
+                {% for column in entity.columns %}
                 <td>{{ item[column.name] }}</td>
                 {% endfor %}
                 <td>

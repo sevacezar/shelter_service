@@ -146,3 +146,30 @@ async def animal_detail(request: Request, animal_id: str):
     if not animal:
         return HTMLResponse(content='Animal not found', status_code=404)
     return templates.TemplateResponse('animal_detail.html', {'request': request, 'animal': animal})
+
+
+@app.get('/admin/{entity_name}', response_class=HTMLResponse)
+async def admin_list(request: Request, entity_name: str):
+    if entity_name == 'animals':
+        entity = {
+            'title': "Питомцы",
+            'name': 'animals',
+            'columns': [
+                {'label': 'ID', 'name': 'id'},
+                {'label': 'Имя', 'name': 'name'},
+                {'label': 'Возраст', 'name': 'age'},
+                {'label': 'Пол', 'name': 'gender'},
+                {'label': 'Размер', 'name': 'size'},
+            ],
+            'items_': animals_db,
+        }
+        meta = [
+            {'name': 'users', 'label': 'Пользователи', 'icon': 'fas fa-users', 'url': '/admin/users'},
+            {'name': 'animals', 'label': 'Питомцы', 'icon': 'fas fa-paw', 'url': '/admin/animals'},
+            {'name': 'views', 'label': 'Просмотры', 'icon': 'fas fa-eye', 'url': '/admin/views'},
+            {'name': 'requests', 'label': 'Заявки на усыновление', 'icon': 'fas fa-heart', 'url': '/admin/requests'},
+
+        ]
+    else:
+        return HTMLResponse(content='Сущность не найдена', status_code=404)
+    return templates.TemplateResponse('admin_content.html', {'request': request, 'entity': entity, 'meta': meta})
