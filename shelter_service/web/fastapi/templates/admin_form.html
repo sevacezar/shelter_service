@@ -1,0 +1,100 @@
+{% extends "admin_base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/admin_menu.css">
+<link rel="stylesheet" href="/static/admin_form_add.css">
+{% endblock %}
+
+{% block admin_content %}
+<div class="content-area">
+    <h2 style="color: #ff7f50; margin-bottom: 2rem;">Добавить нового {{ entity.label }}</h2>
+    
+    <form action="/admin/{{ entity.name }}/add" method="POST" enctype="multipart/form-data">
+        {% for i_field in entity.fields %}
+        <div class="form-group">
+            <label for="{{ i_field.name }}">{{ i_field.label }}</label>
+
+            {% if i_field.type == 'input' %}
+            <input
+                type="{{ i_field.input_type }}"
+                id="{{ i_field.name }}"
+                name="{{ i_field.name }}"
+                class="form-control"
+                {% if i_field.required %}required{% endif %}
+            >
+            {% endif %}
+
+            {% if i_field.type == 'textarea' %}
+            <textarea
+                id="{{ i_field.name }}"
+                name="{{ i_field.name }}"
+                class="form-control"
+                rows="4"
+                {% if i_field.required %}required{% endif %}
+            >
+            </textarea>
+            {% endif %}
+
+            {% if i_field.type == 'select' %}
+            <select
+                id="{{ i_field.name }}"
+                name="{{ i_field.name }}"
+                class="form-control"
+                {% if i_field.required %}required{% endif %}
+            >
+                {% for i_option in i_field.options %}
+                <option value="{{ i_option.value }}">{{ i_option.label }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if entity.name == 'animals' %}
+        <div class="form-group">
+            <h3 style="color: #ff7f50; margin-bottom: 1rem;">Дополнительная информация</h3>
+            
+            {% for extra in entity.extras %}
+            <div class="checkbox-group">
+                <input type="checkbox" id="{{ extra.name }}" name="{{ extra.name }}">
+                <label for="{{ extra.name }}">{{ extra.label }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if entity.animals %}
+        <h3 style="color: #ff7f50; margin: 2rem 0 1rem;">Фото</h3>
+        <div class="photos-container" id="photosContainer">
+            {% for i in range(4) %}
+            <div class="photo-upload">
+                <div class="photo-upload-header">
+                    <label>Фото {{ i+1 }}</label>
+                    <div>
+                        <input type="radio" name="avatar" value="{{ i }}" id="avatar{{ i }}"
+                            {% if i == 0 %}checked{% endif %}>
+                        <label for="avatar{{ i }}">Главное фото</label>
+                    </div>
+                </div>
+                <input type="file" name="photo{{ i }}" accept="image/*" class="form-control">
+                <input type="text" name="photoDescription{{ i }}" placeholder="Описание фото" class="form-control" style="margin-top: 0.5rem;">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        <button type="submit" class="submit-btn">Добавить</button>
+    </form>
+</div>
+
+<script>
+    // Handle avatar radio button changes
+    document.querySelectorAll('input[name="avatar"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            document.querySelectorAll('input[name="avatar"]').forEach(r => r.checked = false);
+            e.target.checked = true;
+        });
+    });
+</script>
+{% endblock %}

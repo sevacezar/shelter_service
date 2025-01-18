@@ -177,3 +177,57 @@ async def admin_list(request: Request, entity_name: str):
     else:
         return HTMLResponse(content='Сущность не найдена', status_code=404)
     return templates.TemplateResponse('admin_list.html', {'request': request, 'entity': entity, 'meta': meta})
+
+@app.get('/admin/{entity_name}/add', response_class=HTMLResponse)
+async def admin_add(request: Request, entity_name: str):
+    if entity_name == 'animals':
+        entity = {
+            'label': "Питомца",
+            'name': 'animals',
+            'fields': [
+                {
+                    'name': 'name',
+                    'label': 'Имя',
+                    'type': 'input',
+                    'input_type': 'text',
+                    'required': True,
+                },
+                {
+                    'name': 'gender',
+                    'label': 'Пол',
+                    'type': 'select',
+                    'options': [
+                        {'value': 'male', 'label': 'Мальчик'},
+                        {'value': 'female', 'label': 'Девочка'},
+                    ],
+                    'required': True,
+                },
+                {
+                    'name': 'birth_date',
+                    'label': 'День рождения',
+                    'type': 'input',
+                    'input_type': 'date',
+                    'required': True,
+                },
+                {
+                    'name': 'description',
+                    'label': 'Описание',
+                    'type': 'textarea',
+                    'required': True,
+                },
+            ],
+            'extras': [
+                {'name': 'has_vaccinations', 'label': 'Вакцинирован'},
+                {'name': 'is_sterilized', 'label': 'Стерилизован'},
+            ]
+        }
+        meta = [
+            {'name': 'users', 'label': 'Пользователи', 'icon': 'fas fa-users', 'url': '/admin/users'},
+            {'name': 'animals', 'label': 'Питомцы', 'icon': 'fas fa-paw', 'url': '/admin/animals'},
+            {'name': 'views', 'label': 'Просмотры', 'icon': 'fas fa-eye', 'url': '/admin/views'},
+            {'name': 'requests', 'label': 'Заявки на усыновление', 'icon': 'fas fa-heart', 'url': '/admin/requests'},
+
+        ]
+    else:
+        return HTMLResponse(content='Сущность не найдена', status_code=404)
+    return templates.TemplateResponse('admin_form.html', {'request': request, 'entity': entity, 'meta': meta})
