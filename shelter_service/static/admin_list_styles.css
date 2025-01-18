@@ -1,0 +1,149 @@
+@font-face {
+font-family: 'Grotesk';
+src: url('https://fonts.cdnfonts.com/css/grotesk') format('woff2');
+}
+
+:root {
+    --primary: #ff7f50;
+    --secondary: #ff7f50; 
+    --light: #ff7f50;
+    --dark: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;
+    font-family: 'Grotesk', 'Segoe UI', sans-serif;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    background: #fff5ee;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    max-width: 1200px; 
+    margin: 2rem auto;
+    padding: 0 1rem;
+    height: calc(100vh - 140px);
+}
+
+.side-menu {
+    background: #ff7f50;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+}
+
+.menu-item {
+    padding: 1rem;
+    color: #fff5ee;
+    text-decoration: none;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    transition: background 0.2s;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: #fff5ee;
+    color: #ff7f50;
+}
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.add-button {
+    padding: 0.8rem 1.5rem;
+    background: #ff7f50;
+    border: none;
+    border-radius: 4px;
+    color: #fff5ee;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.add-button:hover {
+    background: #ff6b3c;
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid #ff7f50;
+    border-radius: 4px;
+}
+
+.search-button {
+    padding: 0.8rem 1.5rem;
+    background: #ff7f50;
+    border: none;
+    border-radius: 4px;
+    color: #fff5ee;
+    cursor: pointer;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+    background: #ff7f50;
+    color: #fff5ee;
+    font-weight: 600;
+}
+
+.data-table tr:hover {
+    background: #fff5ee;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-icon {
+    color: #ff7f50;
+    text-decoration: none;
+}
+
+.action-icon:hover {
+    color: #ff6b3c;
+}

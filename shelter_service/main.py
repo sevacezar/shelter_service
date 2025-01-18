@@ -151,8 +151,12 @@ async def animal_detail(request: Request, animal_id: str):
 @app.get('/admin/{entity_name}', response_class=HTMLResponse)
 async def admin_list(request: Request, entity_name: str):
     if entity_name == 'animals':
+        items_ = animals_db
+        for _ in range(10):
+            items_.extend(animals_db)
+
         entity = {
-            'title': "Питомцы",
+            'label': "Питомцы",
             'name': 'animals',
             'columns': [
                 {'label': 'ID', 'name': 'id'},
@@ -161,7 +165,7 @@ async def admin_list(request: Request, entity_name: str):
                 {'label': 'Пол', 'name': 'gender'},
                 {'label': 'Размер', 'name': 'size'},
             ],
-            'items_': animals_db,
+            'items_': items_,
         }
         meta = [
             {'name': 'users', 'label': 'Пользователи', 'icon': 'fas fa-users', 'url': '/admin/users'},
@@ -172,4 +176,4 @@ async def admin_list(request: Request, entity_name: str):
         ]
     else:
         return HTMLResponse(content='Сущность не найдена', status_code=404)
-    return templates.TemplateResponse('admin_content.html', {'request': request, 'entity': entity, 'meta': meta})
+    return templates.TemplateResponse('admin_list.html', {'request': request, 'entity': entity, 'meta': meta})
