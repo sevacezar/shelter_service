@@ -179,6 +179,7 @@ async def admin_list(request: Request, entity_name: str):
     return templates.TemplateResponse('admin_list.html', {'request': request, 'entity': entity, 'meta': meta})
 
 @app.get('/admin/{entity_name}/add', response_class=HTMLResponse)
+@app.get('/admin/{entity_name}/{id}/update', response_class=HTMLResponse)
 async def admin_add(request: Request, entity_name: str):
     if entity_name == 'animals':
         entity = {
@@ -230,4 +231,5 @@ async def admin_add(request: Request, entity_name: str):
         ]
     else:
         return HTMLResponse(content='Сущность не найдена', status_code=404)
-    return templates.TemplateResponse('admin_form.html', {'request': request, 'entity': entity, 'meta': meta})
+    return templates.TemplateResponse('admin_form.html', {'request': request, 'entity': entity, 'meta': meta, 'action': 'add'})
+

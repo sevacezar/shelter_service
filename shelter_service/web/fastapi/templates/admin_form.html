@@ -2,14 +2,26 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/admin_menu.css">
-<link rel="stylesheet" href="/static/admin_form_add.css">
+<link rel="stylesheet" href="/static/admin_form.css">
 {% endblock %}
 
 {% block admin_content %}
 <div class="content-area">
-    <h2 style="color: #ff7f50; margin-bottom: 2rem;">Добавить нового {{ entity.label }}</h2>
+    <h2 style="color: #ff7f50; margin-bottom: 2rem;">
+        {% if action == 'add' %}
+        Добавить нового {{ entity.label }}
+        {% endif %}
+
+        {% if entity.action == 'update' %}
+        Редактировать {{ entity.label }}
+        {% endif %}
+    </h2>
     
-    <form action="/admin/{{ entity.name }}/add" method="POST" enctype="multipart/form-data">
+    <form
+        action="/admin/{{ entity.name }}/{% if entity.action == 'add' %}add{% else %}{{ entity.id }}/update{% endif %}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
         {% for i_field in entity.fields %}
         <div class="form-group">
             <label for="{{ i_field.name }}">{{ i_field.label }}</label>
@@ -21,6 +33,7 @@
                 name="{{ i_field.name }}"
                 class="form-control"
                 {% if i_field.required %}required{% endif %}
+                value="{{ i_field.value }}"
             >
             {% endif %}
 
@@ -31,7 +44,7 @@
                 class="form-control"
                 rows="4"
                 {% if i_field.required %}required{% endif %}
-            >
+            >{{ i_field.value }}
             </textarea>
             {% endif %}
 
@@ -43,7 +56,8 @@
                 {% if i_field.required %}required{% endif %}
             >
                 {% for i_option in i_field.options %}
-                <option value="{{ i_option.value }}">{{ i_option.label }}</option>
+                <option value="{{ i_option.value }}"
+                {% if i_option.selected %}selected{% endif %}>{{ i_option.label }}</option>
                 {% endfor %}
             </select>
             {% endif %}
@@ -56,30 +70,73 @@
             
             {% for extra in entity.extras %}
             <div class="checkbox-group">
-                <input type="checkbox" id="{{ extra.name }}" name="{{ extra.name }}">
+                <input type="checkbox" id="{{ extra.name }}" name="{{ extra.name }}" {% if extra.checked %}checked{% endif %}>
                 <label for="{{ extra.name }}">{{ extra.label }}</label>
             </div>
             {% endfor %}
         </div>
         {% endif %}
         
-        {% if entity.animals %}
+        {% if entity.name == 'animals' %}
         <h3 style="color: #ff7f50; margin: 2rem 0 1rem;">Фото</h3>
         <div class="photos-container" id="photosContainer">
-            {% for i in range(4) %}
-            <div class="photo-upload">
-                <div class="photo-upload-header">
-                    <label>Фото {{ i+1 }}</label>
-                    <div>
-                        <input type="radio" name="avatar" value="{{ i }}" id="avatar{{ i }}"
-                            {% if i == 0 %}checked{% endif %}>
-                        <label for="avatar{{ i }}">Главное фото</label>
+            {% if action == 'add' %}
+                {% for i in range(4) %}
+                <div class="photo-upload">
+                    <div class="photo-upload-header">
+                        <label>Фото {{ i+1 }}</label>
+                        <div>
+                            <input type="radio" name="avatar" value="{{ i }}" id="avatar{{ i }}"
+                                {% if i == 0 %}checked{% endif %}>
+                            <label for="avatar{{ i }}">Главное фото</label>
+                        </div>
                     </div>
+                    <input type="file" name="photo{{ i }}" accept="image/*" class="form-control">
+                    <input type="text" name="photoDescription{{ i }}" placeholder="Описание фото" class="form-control" style="margin-top: 0.5rem;">
                 </div>
-                <input type="file" name="photo{{ i }}" accept="image/*" class="form-control">
-                <input type="text" name="photoDescription{{ i }}" placeholder="Описание фото" class="form-control" style="margin-top: 0.5rem;">
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                {% if entity.images %}
+                    {% for i in range(entity.images|length) %}
+                        {% if i < 4 %}
+                        <div class="photo-upload">
+                            <div class="existing-photo">
+                                <img src="{{ entity.images[i].path }}" alt="Фото {{i + 1}}">
+                                <!-- Добавь JS на кнопку при удалении - временно -->
+                                <button type="button" class="delete-photo" onclick="deletePhoto('{{ entity.images[i].id }}')">×</button> 
+                                <div class="photo-upload-header">
+                                    <div>
+                                        <input type="radio" name="avatar" value="{{ entity.images[i].id }}" id="avatar{{ entity.images[i].id }}" 
+                                        {% if entity.images[i].is_avatar %}checked{% endif %}>
+                                        <label for="avatar{{ entity.images[i].id }}">Сделать главным фото</label>
+                                    </div>
+                                </div>
+                                <input type="text" name="photoDescription{{ entity.images[i].id }}" 
+                                       value="{{ entity.images[i].description }}" class="form-control photo-description">
+                                <input type="hidden" name="existingPhoto{{ i }}" value="{{ entity.images[i].id }}">
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if entity.images|length < 4 %}
+                        {% for i in range(entity.images|length, 4) %}
+                        <div class="photo-upload">
+                            <div class="photo-upload-header">
+                                <label>Новое фото</label>
+                                <div>
+                                    <input type="radio" name="avatar" value="new{{ i }}" id="avatarNew{{ i }}">
+                                    <label for="avatarNew{{ i }}">Сделать главным фото</label>
+                                </div>
+                            </div>
+                            <input type="file" name="newPhoto{{ i }}" accept="image/*" class="form-control">
+                            <input type="text" name="newPhotoDescription{{ i }}" 
+                                   placeholder="Описание фото" class="form-control" 
+                                   style="margin-top: 0.5rem;">
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
         </div>
         {% endif %}
 
@@ -89,12 +146,26 @@
 </div>
 
 <script>
+    function deletePhoto(photoId) {
+        if (confirm('Вы уверены, что хотите удалить это фото?')) {
+            // In a real application, you would make an API call here
+            console.log(`Deleting photo ${photoId}`);
+            // Then refresh the photos section
+            // For now, we'll just remove it from our array and reinitialize
+            const index = existingPhotos.findIndex(p => p.id === photoId);
+            if (index !== -1) {
+                existingPhotos.splice(index, 1);
+                initializePhotoUploads();
+            }
+        }
+    }
+
     // Handle avatar radio button changes
-    document.querySelectorAll('input[name="avatar"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
+    document.addEventListener('change', (e) => {
+        if (e.target.name === 'avatar') {
             document.querySelectorAll('input[name="avatar"]').forEach(r => r.checked = false);
             e.target.checked = true;
-        });
+        }
     });
 </script>
 {% endblock %}

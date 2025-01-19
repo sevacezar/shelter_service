@@ -75,3 +75,35 @@
     margin-bottom: 0;
     font-weight: normal;
 }
+
+.existing-photo {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.existing-photo img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.delete-photo {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-description {
+    margin-top: 0.5rem;
+}

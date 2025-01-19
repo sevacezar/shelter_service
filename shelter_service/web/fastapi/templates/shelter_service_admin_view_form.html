@@ -1,0 +1,430 @@
+<html><head><base href=".">
+    <title>View Pet - Pet Shelter Admin</title>
+    <meta charset="UTF-8">
+    <style>
+    /* Keeping all existing styles exactly the same */
+    @font-face {
+      font-family: 'Grotesk';
+      src: url('https://fonts.cdnfonts.com/css/grotesk') format('woff2');
+    }
+  
+    :root {
+        --primary: #ff7f50;
+        --secondary: #ff7f50; 
+        --light: #ff7f50;
+        --dark: #333333;
+    }
+  
+    * {
+        margin: 0;
+        padding: 0; 
+        box-sizing: border-box;
+        font-family: 'Grotesk', 'Segoe UI', sans-serif;
+    }
+  
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #fff5ee;
+    }
+  
+    header {
+        background: #ff7f50;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  
+    .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+  
+    .logo {
+        font-size: 24px;
+        color: #fff5ee;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+  
+    .main-content {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 2rem;
+        max-width: 1200px; 
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+  
+    .side-menu {
+        background: #ff7f50;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 2rem;
+        height: fit-content;
+    }
+  
+    .menu-item {
+        padding: 1rem;
+        color: #fff5ee;
+        text-decoration: none;
+        display: block;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        transition: background 0.2s;
+    }
+  
+    .menu-item:hover,
+    .menu-item.active {
+        background: #fff5ee;
+        color: #ff7f50;
+    }
+  
+    .content-area {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+  
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+        font-weight: 600;
+    }
+  
+    .form-control {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+  
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+    }
+  
+    .photos-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+  
+    .photo-upload {
+        border: 2px dashed #ddd;
+        padding: 1rem;
+        border-radius: 4px;
+    }
+  
+    .photo-upload-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+  
+    .submit-btn {
+        background: var(--primary);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+    }
+  
+    .submit-btn:hover {
+        background: #ff6b3c;
+    }
+  
+    footer {
+        background: #ff7f50;
+        color: #333333;
+        padding: 2rem;
+        margin-top: auto;
+    }
+  
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+  
+    .footer-content h4 {
+        color: #fff5ee;
+    }
+  
+    .footer-content p {
+        color: #333333;
+    }
+  
+    .date-inputs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+  
+    .existing-photo {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+  
+    .existing-photo img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+  
+    .delete-photo {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(255, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  
+    .photo-description {
+        margin-top: 0.5rem;
+    }
+  
+    /* Adding new styles for photo modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .modal.active {
+      display: flex;
+    }
+  
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .modal-content img {
+      max-width: 100%;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    </style>
+  </head>
+  <body>
+      <header>
+          <div class="header-content">
+              <a href="https://petshelter.com" class="logo">
+                  <svg width="40" height="40" viewBox="0 0 40 40">
+                      <path d="M20 4C22 4 28 10 28 14C28 17 26 19 23 19C20 19 17 17 17 14C17 10 18 4 20 4Z" fill="currentColor"/>
+                      <path d="M32 14C34 14 38 18 38 21C38 23 36 25 34 25C32 25 30 23 30 21C30 18 30 14 32 14Z" fill="currentColor"/>
+                      <path d="M8 14C10 14 14 18 14 21C14 23 12 25 10 25C8 25 6 23 6 21C6 18 6 14 8 14Z" fill="currentColor"/>
+                      <path d="M20 36C14 36 10 32 10 26C10 20 14 16 20 16C26 16 30 20 30 26C30 32 26 36 20 36Z" fill="currentColor"/>
+                  </svg>
+                  Pet Shelter
+              </a>
+              <nav>
+                  <a href="https://petshelter.com/about" style="text-decoration: none; color: #fff5ee; margin-left: 1rem;">About</a>
+                  <a href="https://petshelter.com/contact" style="text-decoration: none; color: #fff5ee; margin-left: 1rem;">Contact</a>
+              </nav>
+          </div>
+      </header>
+  
+      <main class="main-content">
+          <nav class="side-menu">
+              <a href="https://petshelter.com/admin/users" class="menu-item">Users</a>
+              <a href="https://petshelter.com/admin/pets" class="menu-item active">Pets</a>
+              <a href="https://petshelter.com/admin/views" class="menu-item">Views</a>
+              <a href="https://petshelter.com/admin/adoptions" class="menu-item">Adoption Requests</a>
+          </nav>
+  
+          <div class="content-area">
+              <h2 style="color: #ff7f50; margin-bottom: 2rem;">Pet Details</h2>
+              
+              <div class="pet-details">
+                <div class="form-group">
+                  <label>Pet Name</label>
+                  <div class="form-control" style="background:#f5f5f5">Max</div>
+                </div>
+  
+                <div class="form-group">
+                  <label>Species</label>
+                  <div class="form-control" style="background:#f5f5f5">Dog</div>
+                </div>
+  
+                <div class="form-group">
+                  <label>Breed</label>
+                  <div class="form-control" style="background:#f5f5f5">Golden Retriever</div>
+                </div>
+  
+                <div class="form-group">
+                  <label>Date of Birth</label>
+                  <div class="date-inputs">
+                    <div class="form-control" style="background:#f5f5f5">15</div>
+                    <div class="form-control" style="background:#f5f5f5">6</div>
+                    <div class="form-control" style="background:#f5f5f5">2020</div>
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label>Age</label>
+                  <div class="form-control" style="background:#f5f5f5">3</div>
+                </div>
+  
+                <div class="form-group">
+                  <label>Description</label>
+                  <div class="form-control" style="background:#f5f5f5; min-height:100px">
+                    Friendly and energetic Golden Retriever who loves to play fetch and swim.
+                  </div>
+                </div>
+  
+                <h3 style="color: #ff7f50; margin: 2rem 0 1rem;">Pet Photos</h3>
+                <div class="photos-container" id="photosContainer">
+                  <!-- Photos will be loaded here -->
+                </div>
+              </div>
+          </div>
+      </main>
+  
+      <div id="photoModal" class="modal">
+        <div class="modal-content">
+          <img id="modalImage" src alt="Enlarged pet photo">
+        </div>
+      </div>
+  
+      <footer>
+          <div class="footer-content">
+              <div>
+                  <h4>Contact Us</h4>
+                  <p>Phone: (123) 456-7890</p>
+                  <p>Email: info@petshelter.com</p>
+              </div>
+              <div>
+                  <h4>Address</h4>
+                  <p>123 Pet Street</p>
+                  <p>Animal City, AC 12345</p>
+              </div>
+              <div>
+                  <h4>Hours</h4>
+                  <p>Mon-Fri: 9am - 6pm</p>
+                  <p>Sat-Sun: 10am - 4pm</p>
+              </div>
+          </div>
+      </footer>
+  
+  <script>const existingPhotos = [{
+    id: 1,
+    url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3',
+    description: 'Max playing in the garden',
+    isAvatar: true
+  }, {
+    id: 2,
+    url: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?ixlib=rb-4.0.3',
+    description: 'Max with his favorite toy',
+    isAvatar: false
+  }];
+  function createPhotoUpload(index, photo = null) {
+    if (photo) {
+      return `
+              <div class="photo-upload">
+                  <div class="existing-photo">
+                      <img src="${photo.url}" alt="Pet photo ${index + 1}" onclick="openModal('${photo.url}')">
+                      <div class="photo-upload-header">
+                          <div>
+                              ${photo.isAvatar ? '<span>Avatar photo</span>' : ''}
+                          </div>
+                      </div>
+                      <div class="form-control photo-description" style="background:#f5f5f5">
+                          ${photo.description}
+                      </div>
+                  </div>
+              </div>
+          `;
+    } else {
+      return '';
+    }
+  }
+  function initializePhotoUploads() {
+    const container = document.getElementById('photosContainer');
+    let html = '';
+    existingPhotos.forEach((photo, index) => {
+      html += createPhotoUpload(index, photo);
+    });
+    const remainingSlots = 4 - existingPhotos.length;
+    for (let i = 0; i < remainingSlots; i++) {
+      html += createPhotoUpload(existingPhotos.length + i);
+    }
+    container.innerHTML = html;
+  }
+  function openModal(imageUrl) {
+    const modal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('modalImage');
+    modalImg.style.width = '';
+    modalImg.style.height = '';
+    modal.classList.add('active');
+    modalImg.src = imageUrl;
+    modalImg.onload = () => {
+      const viewport = {
+        width: window.innerWidth * 0.9,
+        height: window.innerHeight * 0.9
+      };
+      const imageRatio = modalImg.naturalWidth / modalImg.naturalHeight;
+      const viewportRatio = viewport.width / viewport.height;
+      if (imageRatio > viewportRatio) {
+        modalImg.style.width = '90vw';
+        modalImg.style.height = 'auto';
+      } else {
+        modalImg.style.width = 'auto';
+        modalImg.style.height = '90vh';
+      }
+    };
+  }
+  document.getElementById('photoModal').addEventListener('click', function (event) {
+    if (event.target === this) {
+      this.classList.remove('active');
+    }
+  });
+  initializePhotoUploads();</script>
+  
+  </body></html>
