@@ -2,7 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/admin_menu.css">
-<link rel="stylesheet" href="/static/admin_form.css">
+<link rel="stylesheet" href="/static/admin_form2.css">
 {% endblock %}
 
 {% block admin_content %}
@@ -12,13 +12,13 @@
         Добавить нового {{ entity.label }}
         {% endif %}
 
-        {% if entity.action == 'update' %}
+        {% if action == 'update' %}
         Редактировать {{ entity.label }}
         {% endif %}
     </h2>
-    
+
     <form
-        action="/admin/{{ entity.name }}/{% if entity.action == 'add' %}add{% else %}{{ entity.id }}/update{% endif %}"
+        action="/admin/{{ entity.name }}/{% if action == 'add' %}add{% else %}{{ entity.id }}/update{% endif %}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -64,10 +64,10 @@
         </div>
         {% endfor %}
 
-        {% if entity.name == 'animals' %}
+        {% if entity.extras %}
         <div class="form-group">
             <h3 style="color: #ff7f50; margin-bottom: 1rem;">Дополнительная информация</h3>
-            
+
             {% for extra in entity.extras %}
             <div class="checkbox-group">
                 <input type="checkbox" id="{{ extra.name }}" name="{{ extra.name }}" {% if extra.checked %}checked{% endif %}>
@@ -76,7 +76,7 @@
             {% endfor %}
         </div>
         {% endif %}
-        
+
         {% if entity.name == 'animals' %}
         <h3 style="color: #ff7f50; margin: 2rem 0 1rem;">Фото</h3>
         <div class="photos-container" id="photosContainer">
@@ -86,7 +86,7 @@
                     <div class="photo-upload-header">
                         <label>Фото {{ i+1 }}</label>
                         <div>
-                            <input type="radio" name="avatar" value="{{ i }}" id="avatar{{ i }}"
+                            <input type="radio" name="is_avatar" value="{{ i }}" id="avatar{{ i }}"
                                 {% if i == 0 %}checked{% endif %}>
                             <label for="avatar{{ i }}">Главное фото</label>
                         </div>
@@ -101,20 +101,19 @@
                         {% if i < 4 %}
                         <div class="photo-upload">
                             <div class="existing-photo">
-                                <img src="{{ entity.images[i].path }}" alt="Фото {{i + 1}}">
+                                <img src="{{ entity.images[i].path }}" alt="Фото {{i + 1}}" onclick="openModal('{{ entity.images[i].path }}')">
                                 <!-- Добавь JS на кнопку при удалении - временно -->
-                                <button type="button" class="delete-photo" onclick="deletePhoto('{{ entity.images[i].id }}')">×</button> 
+                                <button type="button" class="delete-photo" onclick="deletePhoto('{{ entity.images[i].id }}')">×</button>
                                 <div class="photo-upload-header">
                                     <div>
-                                        <input type="radio" name="avatar" value="{{ entity.images[i].id }}" id="avatar{{ entity.images[i].id }}" 
+                                        <input type="radio" name="is_avatar" value="{{ entity.images[i].id }}" id="avatar{{ entity.images[i].id }}"
                                         {% if entity.images[i].is_avatar %}checked{% endif %}>
-                                        <label for="avatar{{ entity.images[i].id }}">Сделать главным фото</label>
+                                        <label for="avatar{{ entity.images[i].id }}">Главное фото</label>
                                     </div>
                                 </div>
-                                <input type="text" name="photoDescription{{ entity.images[i].id }}" 
+                                <input type="text" name="image_description_{{ entity.images[i].id }}"
                                        value="{{ entity.images[i].description }}" class="form-control photo-description">
-                                <input type="hidden" name="existingPhoto{{ i }}" value="{{ entity.images[i].id }}">
-                            </div>
+                                <input type="hidden" name="existing_image_ids" value="{{ entity.images[i].id }}">                         </div>
                         </div>
                         {% endif %}
                     {% endfor %}
@@ -129,8 +128,8 @@
                                 </div>
                             </div>
                             <input type="file" name="newPhoto{{ i }}" accept="image/*" class="form-control">
-                            <input type="text" name="newPhotoDescription{{ i }}" 
-                                   placeholder="Описание фото" class="form-control" 
+                            <input type="text" name="newPhotoDescription{{ i }}"
+                                   placeholder="Описание фото" class="form-control"
                                    style="margin-top: 0.5rem;">
                         </div>
                         {% endfor %}
@@ -141,8 +140,23 @@
         {% endif %}
 
 
-        <button type="submit" class="submit-btn">Добавить</button>
+        <button type="submit" class="submit-btn">
+            {% if action == 'add' %}
+            Добавить
+            {% endif %}
+
+            {% if action == 'update' %}
+            Внести изменения
+            {% endif %}
+        </button>
     </form>
+
+    <!-- Раскрывающееся фото -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+          <img id="modalImage" src alt="Enlarged pet photo">
+        </div>
+    </div>
 </div>
 
 <script>
@@ -165,6 +179,38 @@
         if (e.target.name === 'avatar') {
             document.querySelectorAll('input[name="avatar"]').forEach(r => r.checked = false);
             e.target.checked = true;
+        }
+    });
+
+    // Modal functionality
+    function openModal(imageUrl) {
+        const modal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImage');
+        modalImg.style.width = '';
+        modalImg.style.height = '';
+        modal.classList.add('active');
+        modalImg.src = imageUrl;
+        modalImg.onload = () => {
+            const viewport = {
+            width: window.innerWidth * 0.9,
+            height: window.innerHeight * 0.9
+            };
+            const imageRatio = modalImg.naturalWidth / modalImg.naturalHeight;
+            const viewportRatio = viewport.width / viewport.height;
+            if (imageRatio > viewportRatio) {
+            modalImg.style.width = '90vw';
+            modalImg.style.height = 'auto';
+            } else {
+            modalImg.style.width = 'auto';
+            modalImg.style.height = '90vh';
+            }
+        };
+    }
+
+  // Close modal when clicking outside the image
+    document.getElementById('photoModal').addEventListener('click', function (event) {
+        if (event.target === this) {
+            this.classList.remove('active');
         }
     });
 </script>

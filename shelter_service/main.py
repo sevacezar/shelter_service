@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import FastAPI, Request, Query
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -192,6 +193,7 @@ async def admin_add(request: Request, entity_name: str):
                     'type': 'input',
                     'input_type': 'text',
                     'required': True,
+                    'value': 'Дейзи',
                 },
                 {
                     'name': 'gender',
@@ -199,7 +201,7 @@ async def admin_add(request: Request, entity_name: str):
                     'type': 'select',
                     'options': [
                         {'value': 'male', 'label': 'Мальчик'},
-                        {'value': 'female', 'label': 'Девочка'},
+                        {'value': 'female', 'label': 'Девочка', 'selected': True},
                     ],
                     'required': True,
                 },
@@ -209,18 +211,26 @@ async def admin_add(request: Request, entity_name: str):
                     'type': 'input',
                     'input_type': 'date',
                     'required': True,
+                    # 'value': datetime(2023, 1, 1),
+                    'value': datetime(2023, 1, 1).strftime(format='%Y-%m-%d'),
                 },
                 {
                     'name': 'description',
                     'label': 'Описание',
                     'type': 'textarea',
                     'required': True,
+                    'value': 'Очень хорошая собака',
                 },
             ],
             'extras': [
-                {'name': 'has_vaccinations', 'label': 'Вакцинирован'},
-                {'name': 'is_sterilized', 'label': 'Стерилизован'},
-            ]
+                {'name': 'has_vaccinations', 'label': 'Вакцинирован', 'checked': True},
+                {'name': 'is_sterilized', 'label': 'Стерилизован',},
+            ],
+            'images': [
+                {'id': '1', 'path': '/static/images/1/photo.jpg', 'description': 'Супер милое фото!', 'is_avatar': True},
+                {'id': '2', 'path': '/static/images/1/photo_1.jpg', 'description': 'Супер милое фото 1!', 'is_avatar': False},
+                {'id': '3', 'path': '/static/images/1/photo_2.jpg', 'description': 'Супер милое фото 2!', 'is_avatar': False},
+            ],
         }
         meta = [
             {'name': 'users', 'label': 'Пользователи', 'icon': 'fas fa-users', 'url': '/admin/users'},
@@ -231,5 +241,68 @@ async def admin_add(request: Request, entity_name: str):
         ]
     else:
         return HTMLResponse(content='Сущность не найдена', status_code=404)
-    return templates.TemplateResponse('admin_form.html', {'request': request, 'entity': entity, 'meta': meta, 'action': 'add'})
+    return templates.TemplateResponse('admin_form.html', {'request': request, 'entity': entity, 'meta': meta, 'action': 'update'})
 
+
+@app.get('/admin/{entity_name}/{id}', response_class=HTMLResponse)
+async def admin_detail_view(request: Request, entity_name: str, id: str):
+    if entity_name == 'animals':
+        entity = {
+            'label': "Питомца",
+            'name': 'animals',
+            'fields': [
+                {
+                    'name': 'name',
+                    'label': 'Имя',
+                    'type': 'input',
+                    'input_type': 'text',
+                    'required': True,
+                    'value': 'Дейзи',
+                },
+                {
+                    'name': 'gender',
+                    'label': 'Пол',
+                    'type': 'select',
+                    'options': [
+                        {'value': 'male', 'label': 'Мальчик'},
+                        {'value': 'female', 'label': 'Девочка', 'selected': True},
+                    ],
+                    'required': True,
+                },
+                {
+                    'name': 'birth_date',
+                    'label': 'День рождения',
+                    'type': 'input',
+                    'input_type': 'date',
+                    'required': True,
+                    # 'value': datetime(2023, 1, 1),
+                    'value': datetime(2023, 1, 1).strftime(format='%Y-%m-%d'),
+                },
+                {
+                    'name': 'description',
+                    'label': 'Описание',
+                    'type': 'textarea',
+                    'required': True,
+                    'value': 'Очень хорошая собака',
+                },
+            ],
+            'extras': [
+                {'name': 'has_vaccinations', 'label': 'Вакцинирован', 'checked': True},
+                {'name': 'is_sterilized', 'label': 'Стерилизован',},
+            ],
+            'images': [
+                {'id': '1', 'path': '/static/images/1/photo.jpg', 'description': 'Супер милое фото!', 'is_avatar': True},
+                {'id': '2', 'path': '/static/images/1/photo_1.jpg', 'description': 'Супер милое фото 1!', 'is_avatar': False},
+                {'id': '3', 'path': '/static/images/1/photo_2.jpg', 'description': 'Супер милое фото 2!', 'is_avatar': False},
+            ],
+        }
+        meta = [
+            {'name': 'users', 'label': 'Пользователи', 'icon': 'fas fa-users', 'url': '/admin/users'},
+            {'name': 'animals', 'label': 'Питомцы', 'icon': 'fas fa-paw', 'url': '/admin/animals'},
+            {'name': 'views', 'label': 'Просмотры', 'icon': 'fas fa-eye', 'url': '/admin/views'},
+            {'name': 'requests', 'label': 'Заявки на усыновление', 'icon': 'fas fa-heart', 'url': '/admin/requests'},
+
+        ]
+    else:
+        return HTMLResponse(content='Сущность не найдена', status_code=404)
+    return templates.TemplateResponse('admin_detail.html', {'request': request, 'entity': entity, 'meta': meta,})

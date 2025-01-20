@@ -1,0 +1,127 @@
+{% extends "admin_base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/admin_menu.css">
+<link rel="stylesheet" href="/static/admin_detail.css">
+{% endblock %}
+
+{% block admin_content %}
+<div class="content-area">
+    <h2 style="color: #ff7f50; margin-bottom: 2rem;">
+        Подробная информация {{ entity.label }}
+    </h2>
+
+    <div class="admin-pet-details">
+        {% for i_field in entity.fields %}
+        <div class="form-group">
+            <label>{{ i_field.label }}</label>
+            <div class="form-control" style="background:#f5f5f5">{{ i_field.value }}</div>
+        </div>
+        {% endfor %}
+
+        {% if entity.extras %}
+        <div class="form-group">
+            <h3 style="color: #ff7f50; margin-bottom: 1rem;">Дополнительная информация</h3>
+            <div class="checkbox-group">
+                {% for extra in entity.extras %}
+                <div class="checkbox-item">
+                    <input type="checkbox" id="{{ extra.name }}" checked disabled>
+                    <label for="{{ extra.name }}">{{ extra.label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if entity.name == 'animals' %}
+        <h3 style="color: #ff7f50; margin: 2rem 0 1rem;">Фото</h3>
+        <div class="photos-container" id="photosContainer">
+            {% if entity.images %}
+                {% for i in range(entity.images|length) %}
+                    {% if i < 4 %}
+                    <div class="photo-upload">
+                        <div class="existing-photo">
+                            <img src="{{ entity.images[i].path }}" alt="Фото {{i + 1}}" onclick="openModal('{{ entity.images[i].path }}')">
+                            <!-- Добавь JS на кнопку при удалении - временно -->
+                            <div class="photo-upload-header">
+                                <div>
+                                    {% if entity.images[i].is_avatar %}
+                                    <span>Главное фото</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-control photo-description" style="background:#f5f5f5">
+                                 {{ entity.images[i].description }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+    <!-- Раскрывающееся фото -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+          <img id="modalImage" src alt="Enlarged pet photo">
+        </div>
+    </div>
+</div>
+
+<script>
+    function deletePhoto(photoId) {
+        if (confirm('Вы уверены, что хотите удалить это фото?')) {
+            // In a real application, you would make an API call here
+            console.log(`Deleting photo ${photoId}`);
+            // Then refresh the photos section
+            // For now, we'll just remove it from our array and reinitialize
+            const index = existingPhotos.findIndex(p => p.id === photoId);
+            if (index !== -1) {
+                existingPhotos.splice(index, 1);
+                initializePhotoUploads();
+            }
+        }
+    }
+
+    // Handle avatar radio button changes
+    document.addEventListener('change', (e) => {
+        if (e.target.name === 'avatar') {
+            document.querySelectorAll('input[name="avatar"]').forEach(r => r.checked = false);
+            e.target.checked = true;
+        }
+    });
+
+    // Modal functionality
+    function openModal(imageUrl) {
+        const modal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImage');
+        modalImg.style.width = '';
+        modalImg.style.height = '';
+        modal.classList.add('active');
+        modalImg.src = imageUrl;
+        modalImg.onload = () => {
+            const viewport = {
+            width: window.innerWidth * 0.9,
+            height: window.innerHeight * 0.9
+            };
+            const imageRatio = modalImg.naturalWidth / modalImg.naturalHeight;
+            const viewportRatio = viewport.width / viewport.height;
+            if (imageRatio > viewportRatio) {
+            modalImg.style.width = '90vw';
+            modalImg.style.height = 'auto';
+            } else {
+            modalImg.style.width = 'auto';
+            modalImg.style.height = '90vh';
+            }
+        };
+    }
+
+  // Close modal when clicking outside the image
+    document.getElementById('photoModal').addEventListener('click', function (event) {
+        if (event.target === this) {
+            this.classList.remove('active');
+        }
+    });
+</script>
+{% endblock %}
