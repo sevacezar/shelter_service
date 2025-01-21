@@ -2,6 +2,10 @@
 
 {% block title %}Home - Pet Shelter{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/users_register_form2.css">
+{% endblock %}
+
 {% block content %}
 <div class="main-content">
     <aside class="filters">
@@ -26,7 +30,7 @@
                         {% for option in filter.options %}
                         <label class="dropdown-option">
                             <input type="checkbox" name="{{ filter.query_param_name }}" value="{{ option }}"
-                                {% if option in query_params.getlist(filter.query_param_name) %}checked{% endif %}> 
+                                {% if option in query_params.getlist(filter.query_param_name) %}checked{% endif %}>
                             {{ option }}
                         </label>
                         {% endfor %}

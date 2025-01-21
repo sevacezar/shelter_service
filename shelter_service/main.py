@@ -306,3 +306,8 @@ async def admin_detail_view(request: Request, entity_name: str, id: str):
     else:
         return HTMLResponse(content='Сущность не найдена', status_code=404)
     return templates.TemplateResponse('admin_detail.html', {'request': request, 'entity': entity, 'meta': meta,})
+
+
+@app.get('/users/register', response_class=HTMLResponse)
+async def register(request: Request):
+    return templates.TemplateResponse('users_register_form.html', {'request': request,})

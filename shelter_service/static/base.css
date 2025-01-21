@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'Grotesk';
+    src: url('https://fonts.cdnfonts.com/css/grotesk') format('woff2');
+  }
+
+:root {
+      --primary: #ff7f50;
+      --secondary: #ff7f50;
+      --light: #ff7f50;
+      --dark: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Grotesk', 'Segoe UI', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #fff5ee;
+}
+
+
+header {
+    background: #ff7f50;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    color: #fff5ee;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+footer {
+    background: #ff7f50;
+    color: #333333;
+    padding: 2rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.footer-content h4 {
+    color: #fff5ee;
+}
+
+.footer-content p {
+    color: #333333;
+}
