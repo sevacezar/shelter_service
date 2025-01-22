@@ -1,27 +1,13 @@
 :root {
-    --primary: #FF7F50;
     --secondary: #FFA07A;
     --bg-light: #FFF5EE;
     --text: #333;
   }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
 body {
     background-color: var(--bg-light);
     color: var(--text);
 }
-
-/* .navbar {
-    background-color: white;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-} */
 
 .container {
     max-width: 1200px;

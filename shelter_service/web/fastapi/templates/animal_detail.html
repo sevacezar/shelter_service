@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{{ animal.name }} - Детальная информация{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/animal_details1.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="pet-profile">
+      <div class="pet-gallery">
+        <img src="{{ animal.main_photo.path }}" alt="{{ animal.main_photo.description }}" class="main-image">
+        <div class="gallery-nav">
+          <button class="nav-button prev-button">
+            <svg viewBox="0 0 24 24">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <button class="nav-button next-button">
+            <svg viewBox="0 0 24 24">
+              <path d="M10.59 6L12 7.41 17.17 12l-5.17 4.59L10.59 18l6-6z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="thumbnail-grid">
+            {% for photo in animal.additional_photos %}
+            <img src="{{ photo.path }}" alt="{{ photo.description }}" class="thumbnail">
+            {% endfor %}
+        </div>
+      </div>
+
+      <div class="pet-info">
+        <h1>{{ animal.name }}</h1>
+
+        <div class="basic-info">
+          <p><strong>Возраст, лет:</strong> {{ animal.age }}</p>
+          <p><strong>Пол:</strong> {{ animal.gender }}</p>
+          <p><strong>Размер:</strong> {{ animal.size }}</p>
+        </div>
+
+        <div class="info-block">
+          <h2>О питомце</h2>
+          <p>{{ animal.description }}</p>
+        </div>
+
+        <div class="info-block">
+          <h2>Дополнительная информация</h2>
+          <p>{{ animal.health }}</p>
+          <p>{{ animal.ok_with }}</p>
+        </div>
+
+        <button class="adoption-button">Хочу приютить!</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
