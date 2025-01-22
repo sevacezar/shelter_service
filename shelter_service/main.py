@@ -311,3 +311,7 @@ async def admin_detail_view(request: Request, entity_name: str, id: str):
 @app.get('/users/register', response_class=HTMLResponse)
 async def register(request: Request):
     return templates.TemplateResponse('users_register_form.html', {'request': request,})
+
+@app.get('/users/login', response_class=HTMLResponse)
+async def register(request: Request):
+    return templates.TemplateResponse('users_login_form.html', {'request': request,})
