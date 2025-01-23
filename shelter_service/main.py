@@ -1,16 +1,21 @@
 from datetime import datetime
-from fastapi import FastAPI, Request, Query
+from fastapi import FastAPI, Request, Query, APIRouter
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from domain.animals import AnimalType, AnimalGender, CoatType, Size, Age
+from repositories.mongodb.users_repo import UserMongoRepository
 from web.fastapi.animals.filters import FiltersManager
+from web.fastapi.users.routers import get_user_router
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory='web/fastapi/templates')
 app.mount('/static', StaticFiles(directory='static'), name='static')
+
+user_repo: UserMongoRepository = UserMongoRepository(db=)
+user_router: APIRouter = get_user_router()
 
 animals_db = [
     {
