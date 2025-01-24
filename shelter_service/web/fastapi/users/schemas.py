@@ -10,8 +10,11 @@ class RegistrationForm(BaseModel):
     password_confirm: constr(min_length=8, max_length=128)
 
     @field_validator('password_confirm')
-    def password_match(cls, password_cinfirm, values)
-
+    @classmethod
+    def password_match(cls, password_confirm, values):
+        if 'password' in values and password_confirm != values['password']:
+            raise ValueError('Пароли не совпадают')
+        return password_confirm
 
     @classmethod
     def as_form(
