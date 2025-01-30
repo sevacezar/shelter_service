@@ -8,6 +8,11 @@ class UserNotFound(Exception):
     pass
 
 
+class WrongPassword(Exception):
+    """Exception, when password is wrong"""
+    pass
+
+
 class AnimalNotFound(Exception):
     """Exception, when animal can`t be found"""
     pass

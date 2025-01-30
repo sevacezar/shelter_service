@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Регистрация{% endblock %}
+{% block title %}Войти{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/users_login_form.css">
@@ -12,11 +12,11 @@
         <div class="auth-header">
             <!-- <a href="/users/login" class="auth-tab active" data-form="login">Войти</a>
             <a href="/users/register" class="auth-tab" data-form="register">Зарегистрироваться</a> -->
-          <button class="auth-tab active" data-form="login" onclick="window.location.href='/users/login';">Войти</button>
-          <button class="auth-tab" data-form="register" onclick="window.location.href='/users/register';">Зарегистрироваться</button>
+          <button class="auth-tab active" data-form="login" onclick="window.location.href='/auth/login';">Войти</button>
+          <button class="auth-tab" data-form="register" onclick="window.location.href='/auth/register';">Зарегистрироваться</button>
         </div>
 
-        <form id="loginForm" class="auth-form active" action="/users/login" method="POST">
+        <form id="loginForm" class="auth-form active" action="/auth/login" method="POST">
             <div class="form-group">
               <label for="loginEmail">Email</label>
               <input type="email" id="loginEmail" name="email" class="form-control" required>
@@ -26,11 +26,11 @@
               <label for="loginPassword">Пароль</label>
               <input type="password" id="loginPassword" name="password" class="form-control" required>
             </div>
-
+<!-- 
             <div class="form-group">
               <label for="confirmLoginPassword">Подтвердите пароль</label>
               <input type="password" id="confirmLoginPassword" name="confirmPassword" class="form-control" required>
-            </div>
+            </div> -->
 
             <button type="submit" class="submit-btn">Войти</button>
         </form>

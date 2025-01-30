@@ -60,3 +60,10 @@ class UserMongoRepository(UserBaseRepository):
         async for doc in cursor:
             users.append(self._get_user_obj_with_str_id(user_dict=doc))
         return users
+
+    async def get_admins(self) -> list[Any]:
+        admins: list[User] = []
+        cursor = self._collection.find(filter={'role': 'admin'})
+        async for doc in cursor:
+            admins.append(self._get_user_obj_with_str_id(user_dict=doc))
+        return admins

@@ -33,3 +33,8 @@ class UserBaseRepository(ABC):
     async def delete(self, user: User) -> None:
         """Deletes user"""
         pass
+    
+    @abstractmethod
+    async def get_admins(self) -> list[Any]:
+        """Gets all users with admin role"""
+        pass

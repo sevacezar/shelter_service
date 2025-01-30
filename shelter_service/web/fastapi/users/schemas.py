@@ -1,11 +1,11 @@
-from pydantic import BaseModel, EmailStr, constr, field_validator
+from pydantic import BaseModel, EmailStr, constr, field_validator, Field
 from fastapi import Form
 
 class RegistrationForm(BaseModel):
     first_name: constr(strip_whitespace=True, min_length=2, max_length=50)
     second_name: constr(strip_whitespace=True, min_length=2, max_length=50)
     email: EmailStr
-    phone: constr(regex=r'^\+?\d{10,15}$')
+    phone: constr(pattern=r'^\+?\d{10,15}$')
     password: constr(min_length=8, max_length=128)
     password_confirm: constr(min_length=8, max_length=128)
 
@@ -33,4 +33,20 @@ class RegistrationForm(BaseModel):
             phone=phone,
             password=password,
             password_confirm=password_confirm,
+        )
+
+
+class LoginForm(BaseModel):
+    email: EmailStr
+    password: str
+
+    @classmethod
+    def as_form(
+        cls,
+        email: str = Form(...),
+        password: str = Form(...),
+    ):
+        return cls(
+            email=email,
+            password=password,
         )

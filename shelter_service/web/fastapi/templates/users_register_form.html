@@ -10,8 +10,8 @@
 <div class="main-content">
     <div class="content-area">
         <div class="auth-header">
-          <button class="auth-tab" data-form="login" onclick="window.location.href='/users/login';">Войти</button>
-          <button class="auth-tab active" data-form="register" onclick="window.location.href='/users/register';">Зарегистрироваться</button>
+          <button class="auth-tab" data-form="login" onclick="window.location.href='/auth/login';">Войти</button>
+          <button class="auth-tab active" data-form="register" onclick="window.location.href='/auth/register';">Зарегистрироваться</button>
         </div>
 
         <!-- <form id="loginForm" class="auth-form active" action="/users/login" method="POST">
@@ -28,7 +28,7 @@
           <button type="submit" class="submit-btn">Войти</button>
         </form> -->
 
-        <form id="registerForm" class="auth-form active" action="/users/register" method="POST">
+        <form id="registerForm" class="auth-form active" action="/auth/register" method="POST">
           <div class="form-group">
             <label for="registerEmail">Email</label>
             <input type="email" id="registerEmail" name="email" class="form-control" required>
