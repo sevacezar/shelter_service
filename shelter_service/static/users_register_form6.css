@@ -94,3 +94,10 @@
 .submit-btn:hover {
     background: #ff6b3c;
 }
+
+.error-message {
+    color: #ff4444;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    display: block;
+}

@@ -1,18 +1,51 @@
+import re
+
 from pydantic import BaseModel, EmailStr, constr, field_validator, Field
 from fastapi import Form
 
 class RegistrationForm(BaseModel):
-    first_name: constr(strip_whitespace=True, min_length=2, max_length=50)
-    second_name: constr(strip_whitespace=True, min_length=2, max_length=50)
-    email: EmailStr
-    phone: constr(pattern=r'^\+?\d{10,15}$')
-    password: constr(min_length=8, max_length=128)
-    password_confirm: constr(min_length=8, max_length=128)
+    first_name: str
+    second_name: str
+    email: str
+    phone: str
+    password: str
+    password_confirm: str
+
+    @field_validator('first_name', 'second_name')
+    @classmethod
+    def validate_name(cls, value):
+        if len(value) < 2 or len(value) > 50:
+            raise ValueError('Имя и фамилия должны быть от 2 до 50 символов')
+        return value.strip()
+    
+    @field_validator('email')
+    @classmethod
+    def validate_email(cls, value):
+        if not re.match(
+            r'^[a-zA-Z0-9\_\.\-\+]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z0-9\-\.]{2,}$',
+            value,
+        ):
+            raise ValueError('Некорректный формат email')
+        return value
+
+    @field_validator('phone')
+    @classmethod
+    def validate_phone(cls, value):
+        if not re.match(r'^\+?\d{10,15}$', value):
+            raise ValueError('Телефон должен содержать от 10 до 15 цифр и может начинаться с +')
+        return value
+    
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, value):
+        if len(value) < 8 or len(value) > 128:
+            raise ValueError('Пароль должен быть от 8 до 128 символов')
+        return value
 
     @field_validator('password_confirm')
     @classmethod
     def password_match(cls, password_confirm, values):
-        if 'password' in values and password_confirm != values['password']:
+        if 'password' in values.data and password_confirm != values.data['password']:
             raise ValueError('Пароли не совпадают')
         return password_confirm
 
@@ -37,8 +70,19 @@ class RegistrationForm(BaseModel):
 
 
 class LoginForm(BaseModel):
-    email: EmailStr
+    email: str
     password: str
+
+    @field_validator('email')
+    @classmethod
+    def validate_email(cls, value):
+        if not re.match(
+            r'^[a-zA-Z0-9\_\.\-\+]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z0-9\-\.]{2,}$',
+            value,
+        ):
+            raise ValueError('Некорректный формат email')
+        return value
+
 
     @classmethod
     def as_form(

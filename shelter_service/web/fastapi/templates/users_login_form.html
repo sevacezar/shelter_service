@@ -3,7 +3,7 @@
 {% block title %}Войти{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="/static/users_login_form.css">
+<link rel="stylesheet" href="/static/users_login_form3.css">
 {% endblock %}
 
 {% block content %}
@@ -19,19 +19,33 @@
         <form id="loginForm" class="auth-form active" action="/auth/login" method="POST">
             <div class="form-group">
               <label for="loginEmail">Email</label>
-              <input type="email" id="loginEmail" name="email" class="form-control" required>
+              <input type="text" id="loginEmail" name="email" class="form-control" required
+              {% if form_data and form_data.email %}
+              value="{{ form_data.email }}"
+              {% endif %}
+              >
+              {% if validation_errors and validation_errors.email %}
+              <span class="error-message">
+                {{ validation_errors.email }}
+              </span>
+              {% endif %}
             </div>
 
             <div class="form-group">
               <label for="loginPassword">Пароль</label>
               <input type="password" id="loginPassword" name="password" class="form-control" required>
+              {% if error_message %}
+              <span class="error-message">
+                {{ error_message }}
+              </span>
+              {% endif %}
             </div>
 <!-- 
             <div class="form-group">
               <label for="confirmLoginPassword">Подтвердите пароль</label>
               <input type="password" id="confirmLoginPassword" name="confirmPassword" class="form-control" required>
             </div> -->
-
+            
             <button type="submit" class="submit-btn">Войти</button>
         </form>
     </div>
